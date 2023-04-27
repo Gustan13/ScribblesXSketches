@@ -2,7 +2,8 @@ import pygame
 
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, pos, groups, name):
+        super().__init__(groups)
 
-        self.rect = pygame.rect.Rect(250, 250, 50, 50)
+        self.image = pygame.image.load(name)
+        self.rect = self.image.get_rect(topleft=pos)

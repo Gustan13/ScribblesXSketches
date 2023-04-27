@@ -2,15 +2,18 @@ import pygame as pg
 import sys
 
 from settings import *
+from arena import Arena
 
 
 class Game:
     def __init__(self) -> None:
         pg.init()
+        pg.display.set_caption("Scribbles X Sketches")
 
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
-        pg.display.set_caption("Scribbles X Sketches")
         self.clock = pg.time.Clock()
+
+        self.arena = Arena()
 
     def run(self):
         while True:
@@ -19,7 +22,8 @@ class Game:
                     pg.quit()
                     sys.exit()
 
-            self.screen.fill("blue")
+            self.screen.fill("black")
+            self.arena.run()
             pg.display.update()
             self.clock.tick(FPS)
 

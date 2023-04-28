@@ -1,15 +1,9 @@
-import pygame
-
-from settings import TILE_SIZE, SPRITES_PATH
+from tile import Tile
 
 
-class Bomb(pygame.sprite.Sprite):
+class Bomb(Tile):
     def __init__(self, pos, groups):
-        super().__init__(groups)
-
-        self.image = pygame.image.load(f"{SPRITES_PATH}/bomb.png")
-        self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))
-        self.rect = self.image.get_rect(topleft=pos)
+        super().__init__(pos, groups, "bomb.png")
 
         self.timer = 100
         self.is_dead = False

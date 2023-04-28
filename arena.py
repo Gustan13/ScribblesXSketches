@@ -36,6 +36,7 @@ class Arena:
                         [self.player_sprite],
                         "test.png",
                         self.obstacle_sprites,
+                        self.visible_sprites,
                     )
                     Tile(
                         (col * TILE_SIZE, row * TILE_SIZE),
@@ -50,3 +51,4 @@ class Arena:
         self.player_sprite.draw(self.display_surface)
 
         self.player_sprite.update()
+        self.visible_sprites.update()

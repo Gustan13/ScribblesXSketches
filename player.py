@@ -1,18 +1,29 @@
 import pygame
+from bomb import Bomb
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, number, obstacle_sprites):
+    def __init__(self, pos, groups, number, obstacle_sprites, visible_sprites):
         super().__init__(groups)
 
         self.image = pygame.image.load(number)
-        self.image = pygame.transform.scale(self.image, (30, 30))
+        self.image = pygame.transform.scale(self.image, (16, 16))
+
         self.rect = self.image.get_rect(topleft=pos)
+        self.rect.x += 8
+        self.rect.y += 8
 
         self.direction = pygame.math.Vector2()
         self.speed = 5
 
         self.obstacle_sprites = obstacle_sprites
+        self.visible_sprites = visible_sprites
+
+    def spawn_bomb(self):
+        xPos = int(self.rect.centerx / 32) * 32
+        yPos = int(self.rect.centery / 32) * 32
+
+        Bomb((xPos, yPos), [self.visible_sprites])
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -30,6 +41,9 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = -1
         else:
             self.direction.x = 0
+
+        if keys[pygame.K_z]:
+            self.spawn_bomb()
 
     def move(self):
         if self.direction.magnitude() != 0:

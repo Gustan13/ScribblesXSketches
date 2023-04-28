@@ -33,7 +33,10 @@ class Player(pygame.sprite.Sprite):
         yPos = int(self.rect.centery / TILE_SIZE) * TILE_SIZE
 
         for i, bomb in enumerate(self.bomb_sprites):
-            if (bomb.rect.centerx - 16 == xPos) and (bomb.rect.centery - 16 == yPos):
+            if (bomb.rect.centerx - HALF_TILE == xPos) and (
+                bomb.rect.centery - HALF_TILE == yPos
+            ):
+                print("bro")
                 return
 
         Bomb((xPos, yPos), [self.bomb_sprites])

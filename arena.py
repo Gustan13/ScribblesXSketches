@@ -2,6 +2,7 @@ import pygame
 
 from settings import *
 from tile import Tile
+from player import Player
 
 
 class Arena:
@@ -10,6 +11,7 @@ class Arena:
 
         self.visible_sprites = pygame.sprite.Group()
         self.obstacle_sprites = pygame.sprite.Group()
+        self.player_sprite = pygame.sprite.GroupSingle()
 
         self.create_map()
 
@@ -22,12 +24,29 @@ class Arena:
                         [self.obstacle_sprites],
                         "test.png",
                     )
-                else:
+                elif tile == 0:
                     Tile(
                         (col * TILE_SIZE, row * TILE_SIZE),
-                        [self.obstacle_sprites],
+                        [self.visible_sprites],
+                        "grass.png",
+                    )
+                elif tile == 2:
+                    Player(
+                        (col * TILE_SIZE, row * TILE_SIZE),
+                        [self.player_sprite],
+                        "test.png",
+                        self.obstacle_sprites,
+                    )
+                    Tile(
+                        (col * TILE_SIZE, row * TILE_SIZE),
+                        [self.visible_sprites],
                         "grass.png",
                     )
 
     def run(self):
         self.obstacle_sprites.draw(self.display_surface)
+        self.visible_sprites.draw(self.display_surface)
+
+        self.player_sprite.draw(self.display_surface)
+
+        self.player_sprite.update()

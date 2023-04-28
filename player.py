@@ -5,7 +5,9 @@ from bomb import Bomb
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, image_name, obstacle_sprites, bomb_sprites):
+    def __init__(
+        self, pos, groups, image_name, obstacle_sprites, bomb_sprites, powerup_sprites
+    ):
         super().__init__(groups)
 
         self.image = pygame.image.load(f"{SPRITES_PATH}/{image_name}")
@@ -23,6 +25,8 @@ class Player(pygame.sprite.Sprite):
 
         self.bomb_delay = 0
         self.bomb_reload = 5
+
+        self.powerup_sprites = powerup_sprites
 
     def spawn_bomb(self):
         """Spawns a bomb at the player's position."""
@@ -97,7 +101,16 @@ class Player(pygame.sprite.Sprite):
                 elif self.direction.x < 0:  # ESQUERDA
                     self.rect.left = sprite.rect.right
 
+    def powerup(self):
+        """Checks for collisions with powerups."""
+        objects_hit = pygame.sprite.spritecollide(self, self.powerup_sprites, True)
+
+        for sprite in objects_hit:
+            sprite.apply(self)
+            sprite.kill()
+
     def update(self):
         """Main player loop that runs every frame."""
         self.input()
         self.move()
+        self.powerup()

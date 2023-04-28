@@ -4,9 +4,9 @@ A bomberman clone.
 
 ## Future features
 
-- [ ] Add power ups
+- [v] Add power ups
 
-  - [ ] Add speed power up
+  - [v] Add speed power up
   - [ ] Add bomb power up
   - [ ] Add range power up
   - [ ] Add kick power up

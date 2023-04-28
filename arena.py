@@ -2,6 +2,7 @@ import pygame
 
 from settings import TILE_SIZE, arrayMap
 from tile import Tile
+from powerup import PowerUp
 from player import Player
 
 
@@ -13,6 +14,7 @@ class Arena:
         self.obstacle_sprites = pygame.sprite.Group()
         self.player_sprite = pygame.sprite.GroupSingle()
         self.bomb_sprites = pygame.sprite.Group()
+        self.powerup_sprites = pygame.sprite.Group()
 
         self.create_map()
 
@@ -39,6 +41,18 @@ class Arena:
                         "marcos.png",
                         self.obstacle_sprites,
                         self.bomb_sprites,
+                        self.powerup_sprites,
+                    )
+                    Tile(
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
+                        [self.visible_sprites],
+                        "grass.png",
+                    )
+                elif col == 3:
+                    PowerUp(
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
+                        [self.powerup_sprites],
+                        "speed_up",
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
@@ -53,6 +67,8 @@ class Arena:
 
         self.bomb_sprites.draw(self.display_surface)
         self.player_sprite.draw(self.display_surface)
+        self.powerup_sprites.draw(self.display_surface)
 
         self.player_sprite.update()
         self.bomb_sprites.update()
+        self.powerup_sprites.update()

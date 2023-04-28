@@ -1,11 +1,13 @@
-import pygame as pg
 import sys
+import pygame as pg
 
-from settings import *
+from settings import FPS, HEIGHT, WIDTH
 from arena import Arena
 
 
 class Game:
+    """Main game class."""
+
     def __init__(self) -> None:
         pg.init()
         pg.display.set_caption("Scribbles X Sketches")
@@ -16,6 +18,7 @@ class Game:
         self.arena = Arena()
 
     def run(self):
+        """Main game loop."""
         while True:
             for event in pg.event.get():
                 if event.type == pg.QUIT:

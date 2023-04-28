@@ -1,10 +1,12 @@
 import pygame
 
-from settings import *
+from settings import TILE_SIZE, arrayMap
 from tile import Tile
 
 
 class Arena:
+    """The arena object that contains the map and all the sprites."""
+
     def __init__(self):
         self.display_surface = pygame.display.get_surface()
 
@@ -14,8 +16,9 @@ class Arena:
         self.create_map()
 
     def create_map(self):
-        for row, list in enumerate(arrayMap):
-            for col, tile in enumerate(list):
+        """Create the map from the arrayMap in settings.py."""
+        for row, row_list in enumerate(arrayMap):
+            for col, tile in enumerate(row_list):
                 if tile == 1:
                     Tile(
                         (col * TILE_SIZE, row * TILE_SIZE),
@@ -30,4 +33,5 @@ class Arena:
                     )
 
     def run(self):
+        """Draw the arena."""
         self.obstacle_sprites.draw(self.display_surface)

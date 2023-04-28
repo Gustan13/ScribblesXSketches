@@ -1,6 +1,6 @@
 import pygame
 
-from settings import *
+from settings import TILE_SIZE, arrayMap
 from tile import Tile
 from player import Player
 
@@ -17,35 +17,37 @@ class Arena:
         self.create_map()
 
     def create_map(self):
-        for row, list in enumerate(arrayMap):
-            for col, tile in enumerate(list):
-                if tile == 1:
+        """Creates the map from the arrayMap in settings.py."""
+        for idx_row, row in enumerate(arrayMap):
+            for idx_col, col in enumerate(row):
+                if col == 1:
                     Tile(
-                        (col * TILE_SIZE, row * TILE_SIZE),
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.obstacle_sprites],
                         "test.png",
                     )
-                elif tile == 0:
+                elif col == 0:
                     Tile(
-                        (col * TILE_SIZE, row * TILE_SIZE),
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.visible_sprites],
                         "grass.png",
                     )
-                elif tile == 2:
+                elif col == 2:
                     Player(
-                        (col * TILE_SIZE, row * TILE_SIZE),
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.player_sprite],
                         "marcos.png",
                         self.obstacle_sprites,
                         self.bomb_sprites,
                     )
                     Tile(
-                        (col * TILE_SIZE, row * TILE_SIZE),
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.visible_sprites],
                         "grass.png",
                     )
 
     def run(self):
+        """Main arena loop."""
         self.obstacle_sprites.draw(self.display_surface)
         self.visible_sprites.draw(self.display_surface)
 

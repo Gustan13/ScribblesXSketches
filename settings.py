@@ -1,5 +1,7 @@
 FPS = 60
 
+SPRITES_PATH = "sprites"
+
 TILE_SIZE = 64
 HALF_TILE = TILE_SIZE / 2
 

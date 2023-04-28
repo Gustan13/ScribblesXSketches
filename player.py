@@ -1,19 +1,19 @@
 import pygame
 
-from settings import *
+from settings import HALF_TILE, TILE_SIZE, SPRITES_PATH
 from bomb import Bomb
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, number, obstacle_sprites, bomb_sprites):
+    def __init__(self, pos, groups, image_name, obstacle_sprites, bomb_sprites):
         super().__init__(groups)
 
-        self.image = pygame.image.load(number)
+        self.image = pygame.image.load(f"{SPRITES_PATH}/{image_name}")
         self.image = pygame.transform.scale(self.image, (HALF_TILE, HALF_TILE))
 
         self.rect = self.image.get_rect(topleft=pos)
-        self.rect.x += HALF_TILE / 2
-        self.rect.y += HALF_TILE / 2
+        self.rect.x += int(HALF_TILE / 2)  # rect only works with integers ()
+        self.rect.y += int(HALF_TILE / 2)
 
         self.direction = pygame.math.Vector2()
         self.speed = TILE_SIZE / 16
@@ -25,25 +25,27 @@ class Player(pygame.sprite.Sprite):
         self.bomb_reload = 5
 
     def spawn_bomb(self):
+        """Spawns a bomb at the player's position."""
         if self.bomb_delay > 0:
             self.bomb_delay -= 1
             return
 
-        xPos = int(self.rect.centerx / TILE_SIZE) * TILE_SIZE
-        yPos = int(self.rect.centery / TILE_SIZE) * TILE_SIZE
+        x_pos = int(self.rect.centerx / TILE_SIZE) * TILE_SIZE
+        y_pos = int(self.rect.centery / TILE_SIZE) * TILE_SIZE
 
-        for i, bomb in enumerate(self.bomb_sprites):
-            if (bomb.rect.centerx - HALF_TILE == xPos) and (
-                bomb.rect.centery - HALF_TILE == yPos
+        for bomb in self.bomb_sprites:
+            if (bomb.rect.centerx - HALF_TILE == x_pos) and (
+                bomb.rect.centery - HALF_TILE == y_pos
             ):
                 print("bro")
                 return
 
-        Bomb((xPos, yPos), [self.bomb_sprites])
+        Bomb((x_pos, y_pos), [self.bomb_sprites])
 
         self.bomb_delay = self.bomb_reload
 
     def input(self):
+        """Handles player input."""
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_UP]:
@@ -64,15 +66,17 @@ class Player(pygame.sprite.Sprite):
             self.spawn_bomb()
 
     def move(self):
+        """Moves the player."""
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
 
-        self.rect.x += self.direction.x * self.speed
+        self.rect.x += int(self.direction.x * self.speed)
         self.collision("horizontal")
-        self.rect.y += self.direction.y * self.speed
+        self.rect.y += int(self.direction.y * self.speed)
         self.collision("vertical")
 
     def collision(self, direction):
+        """Checks for collisions with obstacles."""
         if direction == "vertical":
             objects_hit = pygame.sprite.spritecollide(
                 self, self.obstacle_sprites, False
@@ -94,5 +98,6 @@ class Player(pygame.sprite.Sprite):
                     self.rect.left = sprite.rect.right
 
     def update(self):
+        """Main player loop that runs every frame."""
         self.input()
         self.move()

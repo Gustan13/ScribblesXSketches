@@ -1,7 +1,10 @@
 FPS = 60
-WIDTH = 480
-HEIGHT = 480
-TILE_SIZE = 32
+
+TILE_SIZE = 64
+HALF_TILE = TILE_SIZE / 2
+
+WIDTH = 15 * TILE_SIZE
+HEIGHT = 15 * TILE_SIZE
 
 arrayMap = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],

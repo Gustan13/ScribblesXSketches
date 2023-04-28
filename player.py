@@ -1,4 +1,6 @@
 import pygame
+
+from settings import *
 from bomb import Bomb
 
 
@@ -7,28 +9,28 @@ class Player(pygame.sprite.Sprite):
         super().__init__(groups)
 
         self.image = pygame.image.load(number)
-        self.image = pygame.transform.scale(self.image, (16, 16))
+        self.image = pygame.transform.scale(self.image, (HALF_TILE, HALF_TILE))
 
         self.rect = self.image.get_rect(topleft=pos)
-        self.rect.x += 8
-        self.rect.y += 8
+        self.rect.x += HALF_TILE / 2
+        self.rect.y += HALF_TILE / 2
 
         self.direction = pygame.math.Vector2()
-        self.speed = 5
+        self.speed = TILE_SIZE / 6
 
         self.obstacle_sprites = obstacle_sprites
         self.bomb_sprites = bomb_sprites
 
         self.bomb_delay = 0
-        self.bomb_reload = 10
+        self.bomb_reload = 5
 
     def spawn_bomb(self):
         if self.bomb_delay > 0:
             self.bomb_delay -= 1
             return
 
-        xPos = int(self.rect.centerx / 32) * 32
-        yPos = int(self.rect.centery / 32) * 32
+        xPos = int(self.rect.centerx / TILE_SIZE) * TILE_SIZE
+        yPos = int(self.rect.centery / TILE_SIZE) * TILE_SIZE
 
         for i, bomb in enumerate(self.bomb_sprites):
             if (bomb.rect.centerx - 16 == xPos) and (bomb.rect.centery - 16 == yPos):

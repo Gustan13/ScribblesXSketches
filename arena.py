@@ -12,6 +12,7 @@ class Arena:
         self.visible_sprites = pygame.sprite.Group()
         self.obstacle_sprites = pygame.sprite.Group()
         self.player_sprite = pygame.sprite.GroupSingle()
+        self.bomb_sprites = pygame.sprite.Group()
 
         self.create_map()
 
@@ -36,7 +37,7 @@ class Arena:
                         [self.player_sprite],
                         "test.png",
                         self.obstacle_sprites,
-                        self.visible_sprites,
+                        self.bomb_sprites,
                     )
                     Tile(
                         (col * TILE_SIZE, row * TILE_SIZE),
@@ -48,7 +49,8 @@ class Arena:
         self.obstacle_sprites.draw(self.display_surface)
         self.visible_sprites.draw(self.display_surface)
 
+        self.bomb_sprites.draw(self.display_surface)
         self.player_sprite.draw(self.display_surface)
 
         self.player_sprite.update()
-        self.visible_sprites.update()
+        self.bomb_sprites.update()

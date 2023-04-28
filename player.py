@@ -3,7 +3,7 @@ from bomb import Bomb
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, number, obstacle_sprites, visible_sprites):
+    def __init__(self, pos, groups, number, obstacle_sprites, bomb_sprites):
         super().__init__(groups)
 
         self.image = pygame.image.load(number)
@@ -17,13 +17,26 @@ class Player(pygame.sprite.Sprite):
         self.speed = 5
 
         self.obstacle_sprites = obstacle_sprites
-        self.visible_sprites = visible_sprites
+        self.bomb_sprites = bomb_sprites
+
+        self.bomb_delay = 0
+        self.bomb_reload = 10
 
     def spawn_bomb(self):
+        if self.bomb_delay > 0:
+            self.bomb_delay -= 1
+            return
+
         xPos = int(self.rect.centerx / 32) * 32
         yPos = int(self.rect.centery / 32) * 32
 
-        Bomb((xPos, yPos), [self.visible_sprites])
+        for i, bomb in enumerate(self.bomb_sprites):
+            if (bomb.rect.centerx - 16 == xPos) and (bomb.rect.centery - 16 == yPos):
+                return
+
+        Bomb((xPos, yPos), [self.bomb_sprites])
+
+        self.bomb_delay = self.bomb_reload
 
     def input(self):
         keys = pygame.key.get_pressed()

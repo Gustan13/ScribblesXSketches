@@ -35,7 +35,7 @@ class Arena:
                     Player(
                         (col * TILE_SIZE, row * TILE_SIZE),
                         [self.player_sprite],
-                        "test.png",
+                        "marcos.png",
                         self.obstacle_sprites,
                         self.bomb_sprites,
                     )

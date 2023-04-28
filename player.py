@@ -16,7 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += HALF_TILE / 2
 
         self.direction = pygame.math.Vector2()
-        self.speed = TILE_SIZE / 6
+        self.speed = TILE_SIZE / 16
 
         self.obstacle_sprites = obstacle_sprites
         self.bomb_sprites = bomb_sprites

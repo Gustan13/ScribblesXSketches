@@ -11,7 +11,7 @@ class Bomb(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))
         self.rect = self.image.get_rect(topleft=pos)
 
-        self.timer = 60
+        self.timer = 100
         self.isDead = False
 
     def update(self):

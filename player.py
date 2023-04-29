@@ -27,6 +27,8 @@ class Player(pygame.sprite.Sprite):
         self.bomb_delay = 0
         self.bomb_reload = 5
 
+        self.bomb_range = 1
+
         self.powerup_sprites = powerup_sprites
 
     def spawn_bomb(self):
@@ -42,10 +44,9 @@ class Player(pygame.sprite.Sprite):
             if (bomb.rect.centerx - HALF_TILE == x_pos) and (
                 bomb.rect.centery - HALF_TILE == y_pos
             ):
-                print("bro")
                 return
 
-        Bomb((x_pos, y_pos), [self.bomb_sprites], self.obstacle_sprites, self.explosion_sprites)
+        Bomb((x_pos, y_pos), [self.bomb_sprites], self.obstacle_sprites, self.explosion_sprites, self.bomb_range)
 
         self.bomb_delay = self.bomb_reload
 

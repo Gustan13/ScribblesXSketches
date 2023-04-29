@@ -6,7 +6,7 @@ from toolbox import *
 
 
 class Bomb(Tile):
-    def __init__(self, pos, groups, obstacle_sprites, explosion_sprites):
+    def __init__(self, pos, groups, obstacle_sprites, explosion_sprites, bomb_range):
         super().__init__(pos, groups, "bomb.png")
 
         self.timer = 100
@@ -14,6 +14,7 @@ class Bomb(Tile):
 
         self.obstacle_sprites = obstacle_sprites
         self.explosion_sprites = explosion_sprites
+        self.bomb_size = bomb_range
 
     def explode_path(self, row, col, size):
 
@@ -52,4 +53,4 @@ class Bomb(Tile):
         elif self.timer <= 0 and self.is_dead is False:
             self.is_dead = True
             self.kill()
-            self.explode_path(self.rect.y, self.rect.x, 4)
+            self.explode_path(self.rect.y, self.rect.x, self.bomb_size)

@@ -4,23 +4,23 @@ A bomberman clone.
 
 ## Future features
 
-- [x] Explosion system # Binder
+- [x] Explosion system <!-- Binder -->
   - [x] Add explosion
   - [x] Make bombs explode other bombs
   - [x] Make bombs explode power ups
   - [x] Make bombs explode players
 
-- [ ] Health system # Binder
+- [ ] Health system <!-- Binder -->
 
-- [ ] Recieve damage from explosion # Binder
+- [x] Recieve damage from explosion <!-- Binder -->
 
-- [ ] Animation system # Binder
+- [ ] Animation system <!-- Binder -->
 
-- [x] Add power ups # Marcelo
+- [x] Add power ups <!-- Marcelo -->
 
-  - [x] Add speed power up # Marcelo
-  - [x] Add bomb power up # Marcelo
-  - [x] Add range power up
+  - [x] Add speed power up <!-- Marcelo -->
+  - [x] Add bomb power up <!-- Marcelo -->
+  - [x] Add range power up <!-- Binder -->
   - [ ] Add kick power up
   - [ ] Add wifi power up
 

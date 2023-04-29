@@ -4,7 +4,7 @@ from tile import Tile
 from explosion import Explosion
 
 from settings import TILE_SIZE
-from toolbox import check_group_positions
+from toolbox import check_group_positions, round_to_multiple
 
 
 class Bomb(Tile):
@@ -24,6 +24,7 @@ class Bomb(Tile):
 
         Explosion((col, row), [self.explosion_sprites])
 
+        # explode to the right
         while (
             not check_group_positions(
                 (col + TILE_SIZE * aux, row), self.obstacle_sprites
@@ -34,6 +35,7 @@ class Bomb(Tile):
 
         aux = 1
 
+        # explode to the left
         while (
             not check_group_positions(
                 (col - TILE_SIZE * aux, row), self.obstacle_sprites
@@ -44,6 +46,7 @@ class Bomb(Tile):
 
         aux = 1
 
+        # explode down
         while (
             not check_group_positions(
                 (col, row + TILE_SIZE * aux), self.obstacle_sprites
@@ -54,6 +57,7 @@ class Bomb(Tile):
 
         aux = 1
 
+        # explode up
         while (
             not check_group_positions(
                 (col, row - TILE_SIZE * aux), self.obstacle_sprites
@@ -82,5 +86,9 @@ class Bomb(Tile):
         elif self.timer <= 0 and self.is_dead is False:
             self.is_dead = True
             self.kill()
-            self.explode_path(self.rect.y, self.rect.x, self.player.stats["bomb_range"])
+            self.explode_path(
+                round_to_multiple(self.rect.y, TILE_SIZE),
+                round_to_multiple(self.rect.x, TILE_SIZE),
+                self.player.stats["bomb_range"],
+            )
             self.player.current_bombs -= 1

@@ -5,6 +5,7 @@ A bomberman clone.
 ## Future features
 
 - [x] Explosion system <!-- Binder -->
+
   - [x] Add explosion
   - [x] Make bombs explode other bombs
   - [x] Make bombs explode power ups

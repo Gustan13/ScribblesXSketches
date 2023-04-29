@@ -32,20 +32,20 @@ class Arena:
     def create_map(self):
         """Creates the map from the arrayMap in settings.py."""
         for idx_row, row in enumerate(arrayMap):
-            for idx_col, col in enumerate(row):
-                if col == 1:
+            for idx_col, tile in enumerate(row):
+                if tile == 1:
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.obstacle_sprites],
                         "test.png",
                     )
-                elif col == 0:
+                elif tile == 0:
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.visible_sprites],
                         "grass.png",
                     )
-                elif col == 2:
+                elif tile == 2:
                     Player(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.player_sprite],
@@ -60,7 +60,7 @@ class Arena:
                         [self.visible_sprites],
                         "grass.png",
                     )
-                elif col == 3:
+                elif tile == 3:
                     PowerUp(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.powerup_sprites],

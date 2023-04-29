@@ -4,3 +4,8 @@ def check_group_positions(pos, group):
         if member.rect.topleft == pos:
             return True
     return False
+
+
+def round_to_multiple(number, multiple):
+    """Rounds a number to the nearest multiple."""
+    return round(number / multiple) * multiple

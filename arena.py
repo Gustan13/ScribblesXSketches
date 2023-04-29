@@ -55,6 +55,7 @@ class Arena:
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.powerup_sprites],
                         "bomb_range",
+                        self.explosion_sprites
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),

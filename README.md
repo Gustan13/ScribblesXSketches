@@ -7,11 +7,12 @@ A bomberman clone.
 - [x] Explosion system # Binder
   - [x] Add explosion
   - [ ] Make bombs explode other bombs
-  - [ ] Make bombs explode power ups
+  - [x] Make bombs explode power ups
   - [x] Make bombs explode players
-- [ ] Health system
 
-- [ ] Recieve damage from explosion
+- [ ] Health system # Binder
+
+- [ ] Recieve damage from explosion # Binder
 
 - [ ] Animation system # Binder
 

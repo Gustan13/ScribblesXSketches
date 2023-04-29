@@ -1,10 +1,13 @@
+import pygame
+
 from tile import Tile
 
 
 class PowerUp(Tile):
-    def __init__(self, pos, groups, powerup_type):
+    def __init__(self, pos, groups, powerup_type, explosion_sprites):
         super().__init__(pos, groups, "powerup.png")
         self.powerup_type = powerup_type
+        self.explosion_sprites = explosion_sprites
 
     def speed_up(self, stats):
         """Increases the player's speed by 1."""
@@ -40,3 +43,12 @@ class PowerUp(Tile):
             self.kick_bombs(stats)
         elif self.powerup_type == "wifi_explode":
             self.wifi_explode(stats)
+
+    def explosion_collision(self):
+        explosions_hit = pygame.sprite.spritecollide(self, self.explosion_sprites, False)
+
+        if len(explosions_hit) != 0:
+            self.kill()
+
+    def update(self):
+        self.explosion_collision()

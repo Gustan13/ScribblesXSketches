@@ -54,7 +54,7 @@ class Arena:
                     PowerUp(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.powerup_sprites],
-                        "max_bombs",
+                        "bomb_range",
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),

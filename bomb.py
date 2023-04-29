@@ -69,5 +69,5 @@ class Bomb(Tile):
         elif self.timer <= 0 and self.is_dead is False:
             self.is_dead = True
             self.kill()
-            self.explode_path(self.rect.y, self.rect.x, 4)
+            self.explode_path(self.rect.y, self.rect.x, self.player.stats["bomb_range"])
             self.player.current_bombs -= 1

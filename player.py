@@ -41,6 +41,7 @@ class Player(pygame.sprite.Sprite):
             "kick_bombs": False,
             "wifi_explode": False,
         }
+        self.bomb_range = 1
 
         self.powerup_sprites = powerup_sprites
 
@@ -62,7 +63,6 @@ class Player(pygame.sprite.Sprite):
             if (bomb.rect.centerx - HALF_TILE == x_pos) and (
                 bomb.rect.centery - HALF_TILE == y_pos
             ):
-                print("bro")
                 return
 
         Bomb(

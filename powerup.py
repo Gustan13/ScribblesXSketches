@@ -36,7 +36,7 @@ class PowerUp(Tile):
             self.increase_max_bombs(player)
         elif self.powerup_type == "increase_range_of_bombs":
             self.increase_range_of_bombs(player)
-        elif self.powerup_type == "kick_bombs":
+        elif self.powerup_type == "ronaldinho":
             self.kick_bombs(player)
         elif self.powerup_type == "wifi_explode":
             self.wifi_explode(player)

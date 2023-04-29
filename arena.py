@@ -15,6 +15,7 @@ class Arena:
         self.player_sprite = pygame.sprite.GroupSingle()
         self.bomb_sprites = pygame.sprite.Group()
         self.powerup_sprites = pygame.sprite.Group()
+        self.explosion_sprites = pygame.sprite.Group()
 
         self.create_map()
 
@@ -42,6 +43,7 @@ class Arena:
                         self.obstacle_sprites,
                         self.bomb_sprites,
                         self.powerup_sprites,
+                        self.explosion_sprites,
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
@@ -52,7 +54,7 @@ class Arena:
                     PowerUp(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.powerup_sprites],
-                        "speed_up",
+                        "ronaldinho",
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
@@ -62,13 +64,18 @@ class Arena:
 
     def run(self):
         """Main arena loop."""
-        self.obstacle_sprites.draw(self.display_surface)
         self.visible_sprites.draw(self.display_surface)
 
         self.bomb_sprites.draw(self.display_surface)
         self.player_sprite.draw(self.display_surface)
         self.powerup_sprites.draw(self.display_surface)
 
+        self.explosion_sprites.draw(self.display_surface)
+
+        self.obstacle_sprites.draw(self.display_surface)
+
         self.player_sprite.update()
         self.bomb_sprites.update()
         self.powerup_sprites.update()
+        self.obstacle_sprites.update()
+        self.explosion_sprites.update()

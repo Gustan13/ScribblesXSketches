@@ -4,9 +4,17 @@ A bomberman clone.
 
 ## Future features
 
-- [v] Add power ups
+- [x] Explosion system # Binder
 
-  - [v] Add speed power up
+- [ ] Health system
+
+  - [ ] Recieve damage from explosion
+
+- [ ] Animation system # Binder
+
+- [x] Add power ups
+
+  - [x] Add speed power up
   - [ ] Add bomb power up
   - [ ] Add range power up
   - [ ] Add kick power up

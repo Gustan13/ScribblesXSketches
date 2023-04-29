@@ -6,7 +6,7 @@ from bomb import Bomb
 
 class Player(pygame.sprite.Sprite):
     def __init__(
-        self, pos, groups, image_name, obstacle_sprites, bomb_sprites, powerup_sprites
+        self, pos, groups, image_name, obstacle_sprites, bomb_sprites, powerup_sprites, explosion_sprites
     ):
         super().__init__(groups)
 
@@ -22,6 +22,7 @@ class Player(pygame.sprite.Sprite):
 
         self.obstacle_sprites = obstacle_sprites
         self.bomb_sprites = bomb_sprites
+        self.explosion_sprites = explosion_sprites
 
         self.bomb_delay = 0
         self.bomb_reload = 5
@@ -44,7 +45,7 @@ class Player(pygame.sprite.Sprite):
                 print("bro")
                 return
 
-        Bomb((x_pos, y_pos), [self.bomb_sprites])
+        Bomb((x_pos, y_pos), [self.bomb_sprites], self.obstacle_sprites, self.explosion_sprites)
 
         self.bomb_delay = self.bomb_reload
 

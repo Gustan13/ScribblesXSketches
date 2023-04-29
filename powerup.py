@@ -45,6 +45,7 @@ class PowerUp(Tile):
             self.wifi_explode(stats)
 
     def explosion_collision(self):
+        """Checks collision with explosions"""
         explosions_hit = pygame.sprite.spritecollide(self, self.explosion_sprites, False)
 
         if len(explosions_hit) != 0:

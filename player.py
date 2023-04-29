@@ -37,7 +37,7 @@ class Player(pygame.sprite.Sprite):
         self.respawn_point = self.rect.topleft
 
         self.stats = {  # Default stats
-            "max_bombs": 1,
+            "max_bombs": 2,
             "speed": TILE_SIZE // 16,
             "bomb_range": 1,
             "kick_bombs": False,

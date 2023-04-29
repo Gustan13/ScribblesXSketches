@@ -6,7 +6,7 @@ A bomberman clone.
 
 - [x] Explosion system # Binder
   - [x] Add explosion
-  - [ ] Make bombs explode other bombs
+  - [x] Make bombs explode other bombs
   - [x] Make bombs explode power ups
   - [x] Make bombs explode players
 

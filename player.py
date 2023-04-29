@@ -40,7 +40,7 @@ class Player(pygame.sprite.Sprite):
             "max_bombs": 2,
             "speed": TILE_SIZE // 16,
             "bomb_range": 1,
-            "kick_bombs": False,
+            "ronaldinho": False,
             "wifi_explode": False,
         }
         self.bomb_range = 1
@@ -140,9 +140,13 @@ class Player(pygame.sprite.Sprite):
             sprite.apply(self.stats)
             sprite.kill()
 
+            print(self.stats)
+
     def explosions(self):
         """Checks for collisions with explosions and respawns player"""
-        explosions_hit = pygame.sprite.spritecollide(self, self.explosion_sprites, False)
+        explosions_hit = pygame.sprite.spritecollide(
+            self, self.explosion_sprites, False
+        )
 
         if len(explosions_hit) != 0:
             self.rect.topleft = self.respawn_point

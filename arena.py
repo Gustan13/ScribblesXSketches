@@ -1,5 +1,7 @@
 import pygame
 
+from random import choice
+
 from settings import TILE_SIZE, arrayMap
 from tile import Tile
 from powerup import PowerUp
@@ -16,6 +18,14 @@ class Arena:
         self.bomb_sprites = pygame.sprite.Group()
         self.powerup_sprites = pygame.sprite.Group()
         self.explosion_sprites = pygame.sprite.Group()
+
+        self.powerup_array = [
+            "max_bombs",
+            "speed",
+            "bomb_range",
+            "ronaldinho",
+            "wifi_explode",
+        ]
 
         self.create_map()
 
@@ -54,8 +64,9 @@ class Arena:
                     PowerUp(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.powerup_sprites],
-                        "bomb_range",
-                        self.explosion_sprites
+                        # select random powerup
+                        choice(self.powerup_array),
+                        self.explosion_sprites,
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),

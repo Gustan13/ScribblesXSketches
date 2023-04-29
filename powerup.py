@@ -25,7 +25,7 @@ class PowerUp(Tile):
 
     def kick_bombs(self, stats):
         """Allows the player to kick bombs."""
-        stats["kick_bombs"] = True
+        stats["ronaldinho"] = True
 
     def wifi_explode(self, stats):
         """Allows the player to explode bombs remotely."""

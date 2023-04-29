@@ -22,8 +22,8 @@ A bomberman clone.
   - [x] Add speed power up <!-- Marcelo -->
   - [x] Add bomb power up <!-- Marcelo -->
   - [x] Add range power up <!-- Binder -->
-  - [ ] Add kick power up
-  - [ ] Add wifi power up
+  - [x] Add kick power up
+  - [x] Add wifi power up
 
 - [ ] Add local multiplayer
 

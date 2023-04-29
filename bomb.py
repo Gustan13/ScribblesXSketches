@@ -15,8 +15,13 @@ class Bomb(Tile):
         self.is_dead = False
         self.player = player
 
+        self.speed = 0
+        self.direction = pygame.math.Vector2()
+
         self.obstacle_sprites = obstacle_sprites
         self.explosion_sprites = explosion_sprites
+
+        self.can_kick = False
 
     def explode_path(self, row, col, size):
         """Explodes a path of tiles in the four directions."""
@@ -77,9 +82,71 @@ class Bomb(Tile):
         if explosions_hit:
             self.timer = 0
 
+    def update_can_kick(self):
+        """Checks if the bomb can be kicked"""
+        # if not on the same tile as the player, can kick
+        if pygame.sprite.spritecollide(self, [self.player], False):
+            self.can_kick = False
+        else:
+            self.can_kick = True
+
+    def player_collision(self):
+        """Checks collision with the player"""
+
+        if not self.player.stats["ronaldinho"] or not self.can_kick:
+            return
+
+        player_hit = pygame.sprite.spritecollide(self, [self.player], False)
+
+        if not player_hit:
+            return
+
+        # if player has ronaldinho powerup, make the bomb move at the same direction as player
+        self.speed = 2
+
+        if self.player.direction.x > 0:
+            self.direction = pygame.math.Vector2(1, 0)
+        elif self.player.direction.x < 0:
+            self.direction = pygame.math.Vector2(-1, 0)
+        elif self.player.direction.y > 0:
+            self.direction = pygame.math.Vector2(0, 1)
+        elif self.player.direction.y < 0:
+            self.direction = pygame.math.Vector2(0, -1)
+
+    def collision(self, direction):
+        """Checks for collisions with obstacles."""
+        if direction == "vertical":
+            objects_hit = pygame.sprite.spritecollide(
+                self, self.obstacle_sprites, False
+            )
+            for sprite in objects_hit:
+                if self.direction.y > 0:  # BAIXO
+                    self.rect.bottom = sprite.rect.top
+                elif self.direction.y < 0:  # CIMA
+                    self.rect.top = sprite.rect.bottom
+
+        if direction == "horizontal":
+            objects_hit = pygame.sprite.spritecollide(
+                self, self.obstacle_sprites, False
+            )
+            for sprite in objects_hit:
+                if self.direction.x > 0:  # DIREITA
+                    self.rect.right = sprite.rect.left
+                elif self.direction.x < 0:  # ESQUERDA
+                    self.rect.left = sprite.rect.right
+
+    def move(self):
+        """Moves the bomb."""
+        self.rect.x += int(self.direction.x * self.speed)
+        self.collision("horizontal")
+        self.rect.y += int(self.direction.y * self.speed)
+        self.collision("vertical")
+
     def update(self):
         """Updates the bomb's timer."""
         self.explosion_collision()
+        self.player_collision()
+        self.move()
 
         if self.timer > 0:
             self.timer -= 1
@@ -92,3 +159,5 @@ class Bomb(Tile):
                 self.player.stats["bomb_range"],
             )
             self.player.current_bombs -= 1
+
+        self.update_can_kick()

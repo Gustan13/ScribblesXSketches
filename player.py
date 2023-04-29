@@ -149,7 +149,7 @@ class Player(pygame.sprite.Sprite):
             self, self.explosion_sprites, False
         )
 
-        if len(explosions_hit) != 0:
+        if explosions_hit:
             self.rect.topleft = self.respawn_point
 
     def update(self):

@@ -5,24 +5,25 @@ A bomberman clone.
 ## Future features
 
 - [x] Explosion system # Binder
-
+  - [x] Add explosion
+  - [ ] Make bombs explode other bombs
+  - [ ] Make bombs explode power ups
+  - [ ] Make bombs explode players
 - [ ] Health system
 
-  - [ ] Recieve damage from explosion
+- [ ] Recieve damage from explosion
 
 - [ ] Animation system # Binder
 
-- [x] Add power ups
+- [x] Add power ups # Marcelo
 
-  - [x] Add speed power up
-  - [ ] Add bomb power up
+  - [x] Add speed power up # Marcelo
+  - [x] Add bomb power up # Marcelo
   - [ ] Add range power up
   - [ ] Add kick power up
   - [ ] Add wifi power up
 
-- [ ] Add multiplayer
-
-  - [ ] Add local multiplayer
+- [ ] Add local multiplayer
 
 - [ ] Add sprites
 

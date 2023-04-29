@@ -12,5 +12,5 @@ def round_to_multiple_nearest(number, multiple):
 
 
 def floor_to_multiple(number, multiple):
-    """Rounds a number to the nearest multiple."""
+    """Rounds a number to the floor multiple."""
     return (number // multiple) * multiple

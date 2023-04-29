@@ -92,16 +92,8 @@ class Bomb(Tile):
             self.can_collide_with_player = True
             self.can_kick = True
 
-    def player_collision(self):
-        """Checks collision with the player"""
-        player_hit = pygame.sprite.spritecollide(self, [self.player], False)
-
-        if not player_hit:
-            return
-
-        if self.can_collide_with_player and not self.player.stats["ronaldinho"]:
-            self.obstacle_sprites.add(self)
-
+    def kick(self):
+        """Kicks the bomb in the direction the player is facing"""
         if not self.player.stats["ronaldinho"] or not self.can_kick:
             return
 
@@ -118,6 +110,18 @@ class Bomb(Tile):
             self.direction = pygame.math.Vector2(0, 1)
         elif self.player.direction.y < 0:
             self.direction = pygame.math.Vector2(0, -1)
+
+    def player_collision(self):
+        """Checks collision with the player and moves the bomb"""
+        player_hit = pygame.sprite.spritecollide(self, [self.player], False)
+
+        if not player_hit:
+            return
+
+        if self.can_collide_with_player and not self.player.stats["ronaldinho"]:
+            self.obstacle_sprites.add(self)
+
+        self.kick()
 
     def collision(self, direction):
         """Checks for collisions with obstacles."""

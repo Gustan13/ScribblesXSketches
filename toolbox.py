@@ -8,4 +8,4 @@ def check_group_positions(pos, group):
 
 def round_to_multiple(number, multiple):
     """Rounds a number to the nearest multiple."""
-    return round(number / multiple) * multiple
+    return (number // multiple) * multiple

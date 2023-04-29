@@ -22,6 +22,7 @@ class Bomb(Tile):
         self.explosion_sprites = explosion_sprites
 
         self.can_kick = False
+        self.can_collide_with_player = False
 
     def explode_path(self, row, col, size):
         """Explodes a path of tiles in the four directions."""
@@ -88,18 +89,23 @@ class Bomb(Tile):
         if pygame.sprite.spritecollide(self, [self.player], False):
             self.can_kick = False
         else:
+            self.can_collide_with_player = True
             self.can_kick = True
 
     def player_collision(self):
         """Checks collision with the player"""
-
-        if not self.player.stats["ronaldinho"] or not self.can_kick:
-            return
-
         player_hit = pygame.sprite.spritecollide(self, [self.player], False)
 
         if not player_hit:
             return
+
+        if self.can_collide_with_player and not self.player.stats["ronaldinho"]:
+            self.obstacle_sprites.add(self)
+
+        if not self.player.stats["ronaldinho"] or not self.can_kick:
+            return
+
+        self.obstacle_sprites.remove(self)
 
         # if player has ronaldinho powerup, make the bomb move at the same direction as player
         self.speed = 2

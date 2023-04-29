@@ -66,18 +66,20 @@ class Bomb(Tile):
 
     def explosion_collision(self):
         """Checks collision with explosions"""
-        explosions_hit = pygame.sprite.spritecollide(self, self.explosion_sprites, False)
+        explosions_hit = pygame.sprite.spritecollide(
+            self, self.explosion_sprites, False
+        )
 
-        if len(explosions_hit) != 0:
-            print("hej")
+        if explosions_hit:
             self.is_dead = True
             self.kill()
+            self.explode_path(self.rect.y, self.rect.x, self.player.stats["bomb_range"])
             self.player.current_bombs -= 1
 
     def update(self):
+        """Updates the bomb's timer."""
         self.explosion_collision()
 
-        """Updates the bomb's timer."""
         if self.timer > 0:
             self.timer -= 1
         elif self.timer <= 0 and self.is_dead is False:

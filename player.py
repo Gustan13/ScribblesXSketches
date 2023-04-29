@@ -6,7 +6,14 @@ from bomb import Bomb
 
 class Player(pygame.sprite.Sprite):
     def __init__(
-        self, pos, groups, image_name, obstacle_sprites, bomb_sprites, powerup_sprites, explosion_sprites
+        self,
+        pos,
+        groups,
+        image_name,
+        obstacle_sprites,
+        bomb_sprites,
+        powerup_sprites,
+        explosion_sprites,
     ):
         super().__init__(groups)
 
@@ -14,11 +21,11 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (HALF_TILE, HALF_TILE))
 
         self.rect = self.image.get_rect(topleft=pos)
-        self.rect.x += int(HALF_TILE / 2)  # rect only works with integers ()
-        self.rect.y += int(HALF_TILE / 2)
+
+        self.rect.x += HALF_TILE // 2  # Offset
+        self.rect.y += HALF_TILE // 2
 
         self.direction = pygame.math.Vector2()
-        self.speed = TILE_SIZE / 16
 
         self.obstacle_sprites = obstacle_sprites
         self.bomb_sprites = bomb_sprites
@@ -27,10 +34,23 @@ class Player(pygame.sprite.Sprite):
         self.bomb_delay = 0
         self.bomb_reload = 5
 
+        self.stats = {  # Default stats
+            "max_bombs": 1,
+            "speed": TILE_SIZE // 16,
+            "bomb_range": 1,
+            "kick_bombs": False,
+            "wifi_explode": False,
+        }
+
         self.powerup_sprites = powerup_sprites
+
+        self.current_bombs = 0
 
     def spawn_bomb(self):
         """Spawns a bomb at the player's position."""
+        if self.current_bombs >= self.stats["max_bombs"]:
+            return
+
         if self.bomb_delay > 0:
             self.bomb_delay -= 1
             return
@@ -38,16 +58,24 @@ class Player(pygame.sprite.Sprite):
         x_pos = int(self.rect.centerx / TILE_SIZE) * TILE_SIZE
         y_pos = int(self.rect.centery / TILE_SIZE) * TILE_SIZE
 
-        for bomb in self.bomb_sprites:
+        for bomb in self.bomb_sprites:  # Check if there's already a bomb there
             if (bomb.rect.centerx - HALF_TILE == x_pos) and (
                 bomb.rect.centery - HALF_TILE == y_pos
             ):
                 print("bro")
                 return
 
-        Bomb((x_pos, y_pos), [self.bomb_sprites], self.obstacle_sprites, self.explosion_sprites)
+        Bomb(
+            (x_pos, y_pos),
+            [self.bomb_sprites],
+            self.obstacle_sprites,
+            self.explosion_sprites,
+            self,
+        )
 
         self.bomb_delay = self.bomb_reload
+
+        self.current_bombs += 1
 
     def input(self):
         """Handles player input."""
@@ -75,9 +103,9 @@ class Player(pygame.sprite.Sprite):
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
 
-        self.rect.x += int(self.direction.x * self.speed)
+        self.rect.x += int(self.direction.x * self.stats["speed"])
         self.collision("horizontal")
-        self.rect.y += int(self.direction.y * self.speed)
+        self.rect.y += int(self.direction.y * self.stats["speed"])
         self.collision("vertical")
 
     def collision(self, direction):
@@ -107,7 +135,7 @@ class Player(pygame.sprite.Sprite):
         objects_hit = pygame.sprite.spritecollide(self, self.powerup_sprites, True)
 
         for sprite in objects_hit:
-            sprite.apply(self)
+            sprite.apply(self.stats)
             sprite.kill()
 
     def update(self):

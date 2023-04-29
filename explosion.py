@@ -1,24 +1,19 @@
-import pygame
-
-from settings import *
+from tile import Tile
 
 
-class Explosion(pygame.sprite.Sprite):
-
+class Explosion(Tile):
     def __init__(self, pos, groups):
-        super().__init__(groups)
-
-        self.image = pygame.image.load(f"{SPRITES_PATH}/marcos.png")
-        self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))
-        self.rect = self.image.get_rect(topleft=pos)
+        super().__init__(pos, groups, "marcos.png")
 
         self.timer = 100
 
     def destroy(self):
+        """Destroys the explosion after a certain amount of time."""
         if self.timer > 0:
             self.timer -= 1
         else:
             self.kill()
 
     def update(self):
+        """Updates the explosion."""
         self.destroy()

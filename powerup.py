@@ -5,7 +5,7 @@ from tile import Tile
 
 class PowerUp(Tile):
     def __init__(self, pos, groups, powerup_type, explosion_sprites):
-        super().__init__(pos, groups, "powerup.png")
+        super().__init__(pos, groups, f"{powerup_type}.png")
         self.powerup_type = powerup_type
         self.explosion_sprites = explosion_sprites
 
@@ -46,10 +46,13 @@ class PowerUp(Tile):
 
     def explosion_collision(self):
         """Checks collision with explosions"""
-        explosions_hit = pygame.sprite.spritecollide(self, self.explosion_sprites, False)
+        explosions_hit = pygame.sprite.spritecollide(
+            self, self.explosion_sprites, False
+        )
 
-        if len(explosions_hit) != 0:
+        if explosions_hit:
             self.kill()
 
     def update(self):
+        """Checks for collision with explosions every frame."""
         self.explosion_collision()

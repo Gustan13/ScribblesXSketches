@@ -4,7 +4,7 @@ from tile import Tile
 from explosion import Explosion
 
 from settings import TILE_SIZE
-from toolbox import check_group_positions, round_to_multiple
+from toolbox import check_group_positions, round_to_multiple_nearest
 
 
 class Bomb(Tile):
@@ -158,14 +158,14 @@ class Bomb(Tile):
         self.player_collision()
         self.move()
 
-        if self.timer > 0:
+        if self.timer > 0 and not self.player.stats["wifi_explode"]:
             self.timer -= 1
         elif self.timer <= 0 and self.is_dead is False:
             self.is_dead = True
             self.kill()
             self.explode_path(
-                round_to_multiple(self.rect.y, TILE_SIZE),
-                round_to_multiple(self.rect.x, TILE_SIZE),
+                round_to_multiple_nearest(self.rect.y, TILE_SIZE),
+                round_to_multiple_nearest(self.rect.x, TILE_SIZE),
                 self.player.stats["bomb_range"],
             )
             self.player.current_bombs -= 1

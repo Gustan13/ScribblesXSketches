@@ -1,6 +1,6 @@
 import pygame
 
-from toolbox import round_to_multiple
+from toolbox import floor_to_multiple
 from settings import HALF_TILE, TILE_SIZE, SPRITES_PATH
 
 from bomb import Bomb
@@ -46,10 +46,13 @@ class Player(pygame.sprite.Sprite):
             "wifi_explode": False,
         }
         self.bomb_range = 1
+        self.wifi_explode_reload = 10
 
         self.powerup_sprites = powerup_sprites
 
         self.current_bombs = 0
+
+        self.bombs_stack = []
 
     def spawn_bomb(self):
         """Spawns a bomb at the player's position."""
@@ -60,20 +63,23 @@ class Player(pygame.sprite.Sprite):
             self.bomb_delay -= 1
             return
 
-        x_pos = round_to_multiple(self.rect.x, TILE_SIZE)
-        y_pos = round_to_multiple(self.rect.y, TILE_SIZE)
+        x_pos = floor_to_multiple(self.rect.x, TILE_SIZE)
+        y_pos = floor_to_multiple(self.rect.y, TILE_SIZE)
 
         for bomb in self.bomb_sprites:  # Check if there's already a bomb there
             if (bomb.rect.x == x_pos) and (bomb.rect.y == y_pos):
                 print("There's already a bomb there!")
                 return
 
-        Bomb(
-            (x_pos, y_pos),
-            [self.bomb_sprites],
-            self.obstacle_sprites,
-            self.explosion_sprites,
-            self,
+        # add to the stack
+        self.bombs_stack.append(
+            Bomb(
+                (x_pos, y_pos),
+                [self.bomb_sprites],
+                self.obstacle_sprites,
+                self.explosion_sprites,
+                self,
+            )
         )
 
         self.bomb_delay = self.bomb_reload
@@ -100,6 +106,16 @@ class Player(pygame.sprite.Sprite):
 
         if keys[pygame.K_z]:
             self.spawn_bomb()
+
+        if (
+            keys[pygame.K_x]
+            and self.stats["wifi_explode"]
+            and self.bombs_stack
+            and self.wifi_explode_reload <= 0
+        ):
+            self.wifi_explode_reload = 10
+            self.bombs_stack[-1].timer = 0  # explode the bomb
+            self.bombs_stack.pop()
 
     def move(self):
         """Moves the player."""
@@ -154,6 +170,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         """Main player loop that runs every frame."""
+        self.wifi_explode_reload -= 1
         self.input()
         self.move()
         self.powerup()

@@ -6,6 +6,11 @@ def check_group_positions(pos, group):
     return False
 
 
-def round_to_multiple(number, multiple):
+def round_to_multiple_nearest(number, multiple):
+    """Rounds a number to the nearest multiple."""
+    return round(number / multiple) * multiple
+
+
+def floor_to_multiple(number, multiple):
     """Rounds a number to the nearest multiple."""
     return (number // multiple) * multiple

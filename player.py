@@ -1,6 +1,8 @@
 import pygame
 
+from toolbox import round_to_multiple
 from settings import HALF_TILE, TILE_SIZE, SPRITES_PATH
+
 from bomb import Bomb
 
 
@@ -58,13 +60,12 @@ class Player(pygame.sprite.Sprite):
             self.bomb_delay -= 1
             return
 
-        x_pos = int(self.rect.centerx / TILE_SIZE) * TILE_SIZE
-        y_pos = int(self.rect.centery / TILE_SIZE) * TILE_SIZE
+        x_pos = round_to_multiple(self.rect.x, TILE_SIZE)
+        y_pos = round_to_multiple(self.rect.y, TILE_SIZE)
 
         for bomb in self.bomb_sprites:  # Check if there's already a bomb there
-            if (bomb.rect.centerx - HALF_TILE == x_pos) and (
-                bomb.rect.centery - HALF_TILE == y_pos
-            ):
+            if (bomb.rect.x == x_pos) and (bomb.rect.y == y_pos):
+                print("There's already a bomb there!")
                 return
 
         Bomb(

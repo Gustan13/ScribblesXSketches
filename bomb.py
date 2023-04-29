@@ -71,10 +71,7 @@ class Bomb(Tile):
         )
 
         if explosions_hit:
-            self.is_dead = True
-            self.kill()
-            self.explode_path(self.rect.y, self.rect.x, self.player.stats["bomb_range"])
-            self.player.current_bombs -= 1
+            self.timer = 0
 
     def update(self):
         """Updates the bomb's timer."""

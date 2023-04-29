@@ -8,7 +8,7 @@ A bomberman clone.
   - [x] Add explosion
   - [ ] Make bombs explode other bombs
   - [ ] Make bombs explode power ups
-  - [ ] Make bombs explode players
+  - [x] Make bombs explode players
 - [ ] Health system
 
 - [ ] Recieve damage from explosion
@@ -19,7 +19,7 @@ A bomberman clone.
 
   - [x] Add speed power up # Marcelo
   - [x] Add bomb power up # Marcelo
-  - [ ] Add range power up
+  - [x] Add range power up
   - [ ] Add kick power up
   - [ ] Add wifi power up
 

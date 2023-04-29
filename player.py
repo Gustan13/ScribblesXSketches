@@ -34,6 +34,8 @@ class Player(pygame.sprite.Sprite):
         self.bomb_delay = 0
         self.bomb_reload = 5
 
+        self.respawn_point = self.rect.topleft
+
         self.stats = {  # Default stats
             "max_bombs": 1,
             "speed": TILE_SIZE // 16,
@@ -138,8 +140,16 @@ class Player(pygame.sprite.Sprite):
             sprite.apply(self.stats)
             sprite.kill()
 
+    def explosions(self):
+        """Checks for collisions with explosions and respawns player"""
+        explosions_hit = pygame.sprite.spritecollide(self, self.explosion_sprites, False)
+
+        if len(explosions_hit) != 0:
+            self.rect.topleft = self.respawn_point
+
     def update(self):
         """Main player loop that runs every frame."""
         self.input()
         self.move()
         self.powerup()
+        self.explosions()

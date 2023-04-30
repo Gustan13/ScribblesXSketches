@@ -5,7 +5,7 @@ class Explosion(Tile):
     def __init__(self, pos, groups):
         super().__init__(pos, groups, "marcos.png")
 
-        self.timer = 100
+        self.timer = 50
 
     def destroy(self):
         """Destroys the explosion after a certain amount of time."""

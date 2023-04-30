@@ -110,8 +110,8 @@ class Player(pygame.sprite.Sprite):
             and self.wifi_explode_reload <= 0
         ):
             self.wifi_explode_reload = 10
-            self.bombs_stack[-1].timer = 0  # explode the bomb
-            self.bombs_stack.pop()
+            self.bombs_stack[0].timer = 0  # explode the bomb
+            self.bombs_stack.remove(self.bombs_stack[0])  # remove from the stack
 
     def move(self):
         """Moves the player."""

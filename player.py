@@ -166,6 +166,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         """Main player loop that runs every frame."""
+
         self.wifi_explode_reload -= 1
         self.input()
         self.move()

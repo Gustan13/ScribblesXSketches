@@ -13,6 +13,8 @@ class Bomb(Tile):
     def __init__(self, pos, groups, obstacle_sprites, explosion_sprites, player):
         super().__init__(pos, groups, "bomb.png")
 
+        self.bomb_sprites = groups[0]
+
         Bomb.num_of_bombs += 1
 
         self.timer = 60 * 2
@@ -190,11 +192,28 @@ class Bomb(Tile):
         self.rect.y += int(self.direction.y * self.speed)
         self.collision("vertical")
 
+    def collision_bomb_bomb(self):
+        """Checks collision with other bombs"""
+
+        self.bomb_sprites.remove(self)
+
+        bombs_hit = pygame.sprite.spritecollide(self, self.bomb_sprites, False)
+
+        if bombs_hit:
+            for bomb in bombs_hit:
+                bomb.speed, self.speed = self.speed, bomb.speed
+                bomb.direction, self.direction = self.direction, bomb.direction
+
+                self.rect.x = round_to_multiple_nearest(self.rect.x, TILE_SIZE)
+                self.rect.y = round_to_multiple_nearest(self.rect.y, TILE_SIZE)
+
+        self.bomb_sprites.add(self)
+
     def update(self):
         """Updates the bomb's timer."""
+        self.collision_bomb_bomb()
         self.explosion_collision()
         self.move()
-        self.collision_bomb_bomb()
         self.player_collision_without_ronaldinho()
 
         if self.timer > 0 and not self.player.stats["wifi_explode"]:

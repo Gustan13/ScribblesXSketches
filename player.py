@@ -33,7 +33,6 @@ class Player(pygame.sprite.Sprite):
         self.bomb_sprites = bomb_sprites
         self.explosion_sprites = explosion_sprites
 
-        self.bomb_delay = 0
         self.bomb_reload = 5
 
         self.respawn_point = self.rect.topleft
@@ -57,10 +56,6 @@ class Player(pygame.sprite.Sprite):
         if Bomb.num_of_bombs >= self.stats["max_bombs"]:
             return
 
-        if self.bomb_delay > 0:
-            self.bomb_delay -= 1
-            return
-
         x_pos = floor_to_multiple(self.rect.x, TILE_SIZE)
         y_pos = floor_to_multiple(self.rect.y, TILE_SIZE)
 
@@ -79,8 +74,6 @@ class Player(pygame.sprite.Sprite):
                 self,
             )
         )
-
-        self.bomb_delay = self.bomb_reload
 
     def input(self):
         """Handles player input."""

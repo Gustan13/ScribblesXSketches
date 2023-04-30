@@ -141,7 +141,8 @@ class Bomb(Tile):
                 if self.direction.y > 0:  # BAIXO
                     self.rect.bottom = sprite.rect.top
 
-                    # if the player is on top of the bomb, the player can't kick it and will have collision
+                    # if the player is on top of the bomb, it will have collision
+                    # if the bomb is colliding with another bomb, it will have collision
                     if (
                         self.can_collide_with_player
                         and self.player.direction.y > 0
@@ -204,8 +205,8 @@ class Bomb(Tile):
                 bomb.speed, self.speed = self.speed, bomb.speed
                 bomb.direction, self.direction = self.direction, bomb.direction
 
-                self.rect.x = round_to_multiple_nearest(self.rect.x, TILE_SIZE)
-                self.rect.y = round_to_multiple_nearest(self.rect.y, TILE_SIZE)
+                bomb.rect.x = round_to_multiple_nearest(bomb.rect.x, TILE_SIZE)
+                bomb.rect.y = round_to_multiple_nearest(bomb.rect.y, TILE_SIZE)
 
         self.bomb_sprites.add(self)
 

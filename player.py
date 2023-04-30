@@ -40,7 +40,7 @@ class Player(pygame.sprite.Sprite):
 
         self.stats = {  # Default stats
             "max_bombs": 2,
-            "speed": TILE_SIZE // 16,
+            "speed": 4,
             "bomb_range": 1,
             "ronaldinho": False,
             "wifi_explode": False,
@@ -50,13 +50,11 @@ class Player(pygame.sprite.Sprite):
 
         self.powerup_sprites = powerup_sprites
 
-        self.current_bombs = 0
-
         self.bombs_stack = []
 
     def spawn_bomb(self):
         """Spawns a bomb at the player's position."""
-        if self.current_bombs >= self.stats["max_bombs"]:
+        if Bomb.num_of_bombs >= self.stats["max_bombs"]:
             return
 
         if self.bomb_delay > 0:
@@ -83,8 +81,6 @@ class Player(pygame.sprite.Sprite):
         )
 
         self.bomb_delay = self.bomb_reload
-
-        self.current_bombs += 1
 
     def input(self):
         """Handles player input."""

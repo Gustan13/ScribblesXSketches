@@ -8,10 +8,14 @@ from toolbox import check_group_positions, round_to_multiple_nearest
 
 
 class Bomb(Tile):
+    num_of_bombs = 0
+
     def __init__(self, pos, groups, obstacle_sprites, explosion_sprites, player):
         super().__init__(pos, groups, "bomb.png")
 
-        self.timer = 100
+        Bomb.num_of_bombs += 1
+
+        self.timer = 60 * 2
         self.is_dead = False
         self.player = player
 
@@ -100,7 +104,7 @@ class Bomb(Tile):
         self.obstacle_sprites.remove(self)
 
         # if player has ronaldinho powerup, make the bomb move at the same direction as player
-        self.speed = 2
+        self.speed = 4
 
         if self.player.direction.x > 0:
             self.direction = pygame.math.Vector2(1, 0)
@@ -129,6 +133,7 @@ class Bomb(Tile):
             objects_hit = pygame.sprite.spritecollide(
                 self, self.obstacle_sprites, False
             )
+
             for sprite in objects_hit:
                 if self.direction.y > 0:  # BAIXO
                     self.rect.bottom = sprite.rect.top
@@ -139,6 +144,7 @@ class Bomb(Tile):
             objects_hit = pygame.sprite.spritecollide(
                 self, self.obstacle_sprites, False
             )
+
             for sprite in objects_hit:
                 if self.direction.x > 0:  # DIREITA
                     self.rect.right = sprite.rect.left
@@ -155,19 +161,19 @@ class Bomb(Tile):
     def update(self):
         """Updates the bomb's timer."""
         self.explosion_collision()
-        self.player_collision()
         self.move()
+        self.player_collision()
 
         if self.timer > 0 and not self.player.stats["wifi_explode"]:
             self.timer -= 1
         elif self.timer <= 0 and self.is_dead is False:
             self.is_dead = True
+            Bomb.num_of_bombs -= 1
             self.kill()
             self.explode_path(
                 round_to_multiple_nearest(self.rect.y, TILE_SIZE),
                 round_to_multiple_nearest(self.rect.x, TILE_SIZE),
                 self.player.stats["bomb_range"],
             )
-            self.player.current_bombs -= 1
 
         self.update_can_kick()

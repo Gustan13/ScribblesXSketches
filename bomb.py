@@ -72,7 +72,7 @@ class Bomb(Tile):
             not check_group_positions(
                 (col, row - TILE_SIZE * aux), self.obstacle_sprites
             )
-        ) and (aux < size + 1):
+        ) and (aux <= size):
             Explosion((col, row - TILE_SIZE * aux), [self.explosion_sprites])
             aux += 1
 
@@ -101,8 +101,6 @@ class Bomb(Tile):
         if not self.player.stats["ronaldinho"] or not self.can_kick:
             return
 
-        self.obstacle_sprites.remove(self)
-
         # if player has ronaldinho powerup, make the bomb move at the same direction as player
         self.speed = 4
 
@@ -115,7 +113,7 @@ class Bomb(Tile):
         elif self.player.direction.y < 0:
             self.direction = pygame.math.Vector2(0, -1)
 
-    def player_collision(self):
+    def player_collision_without_ronaldinho(self):
         """Checks collision with the player and moves the bomb"""
         player_hit = pygame.sprite.spritecollide(self, [self.player], False)
 
@@ -129,6 +127,9 @@ class Bomb(Tile):
 
     def collision(self, direction):
         """Checks for collisions with obstacles."""
+
+        player_hit = pygame.sprite.spritecollide(self, [self.player], False)
+
         if direction == "vertical":
             objects_hit = pygame.sprite.spritecollide(
                 self, self.obstacle_sprites, False
@@ -137,8 +138,24 @@ class Bomb(Tile):
             for sprite in objects_hit:
                 if self.direction.y > 0:  # BAIXO
                     self.rect.bottom = sprite.rect.top
+
+                    # if the player is on top of the bomb, the player can't kick it and will have collision
+                    if (
+                        self.can_collide_with_player
+                        and self.player.direction.y > 0
+                        and player_hit
+                    ):
+                        self.player.rect.bottom = self.rect.top + 1
+
                 elif self.direction.y < 0:  # CIMA
                     self.rect.top = sprite.rect.bottom
+
+                    if (
+                        self.can_collide_with_player
+                        and self.player.direction.y < 0
+                        and player_hit
+                    ):
+                        self.player.rect.top = self.rect.bottom - 1
 
         if direction == "horizontal":
             objects_hit = pygame.sprite.spritecollide(
@@ -148,8 +165,23 @@ class Bomb(Tile):
             for sprite in objects_hit:
                 if self.direction.x > 0:  # DIREITA
                     self.rect.right = sprite.rect.left
+
+                    if (
+                        self.can_collide_with_player
+                        and self.player.direction.x > 0
+                        and player_hit
+                    ):
+                        self.player.rect.right = self.rect.left + 1
+
                 elif self.direction.x < 0:  # ESQUERDA
                     self.rect.left = sprite.rect.right
+
+                    if (
+                        self.can_collide_with_player
+                        and self.player.direction.x < 0
+                        and player_hit
+                    ):
+                        self.player.rect.left = self.rect.right - 1
 
     def move(self):
         """Moves the bomb."""
@@ -162,7 +194,8 @@ class Bomb(Tile):
         """Updates the bomb's timer."""
         self.explosion_collision()
         self.move()
-        self.player_collision()
+        self.collision_bomb_bomb()
+        self.player_collision_without_ronaldinho()
 
         if self.timer > 0 and not self.player.stats["wifi_explode"]:
             self.timer -= 1

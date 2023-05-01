@@ -50,7 +50,6 @@ class Player(pygame.sprite.Sprite):
             "ronaldinho": True,  # Ronaldinho mode true para teste
             "wifi_explode": False,
         }
-        self.bomb_range = 1
 
         self.powerup_sprites = powerup_sprites
 
@@ -60,6 +59,9 @@ class Player(pygame.sprite.Sprite):
         """Spawns a bomb at the player's position."""
         if self.current_bombs >= self.stats["max_bombs"]:
             return
+
+        if self.current_bombs == 1:  # first bomb has no cooldown
+            self.bomb_delay = 0
 
         if self.bomb_delay > 0:
             self.bomb_delay -= 1

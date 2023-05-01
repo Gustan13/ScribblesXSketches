@@ -20,7 +20,7 @@ class Bomb(Tile):
     ):
         super().__init__(pos, groups, "bomb.png")
 
-        self.timer = 120
+        self.timer = 200
         self.is_dead = False
 
         self.player_group = player_group[0]
@@ -150,7 +150,7 @@ class Bomb(Tile):
         if not self.can_collide_with_player:
             return False
 
-        player_hit = pygame.sprite.collide_rect_ratio(1.06)(self, self.player)
+        player_hit = pygame.sprite.collide_rect_ratio(1.04)(self, self.player)
 
         return player_hit
 
@@ -160,15 +160,21 @@ class Bomb(Tile):
             return
 
         # if player has ronaldinho powerup, make the bomb move at the same direction as player
-        self.speed = 4
 
-        if self.player.direction.x > 0:
+        self.speed = 4
+        # check if player is colliding with the top left edge of the bomb
+        left_edge = pygame.Rect(*self.rect.topleft, 2, TILE_SIZE)
+        top_edge = pygame.Rect(*self.rect.topleft, TILE_SIZE, 2)
+        right_edge = pygame.Rect(*self.rect.topright, 2, TILE_SIZE)
+        bottom_edge = pygame.Rect(*self.rect.bottomleft, TILE_SIZE, 2)
+
+        if self.player.direction.x > 0 and left_edge.colliderect(self.player.rect):
             self.direction = pygame.math.Vector2(1, 0)
-        elif self.player.direction.x < 0:
+        elif self.player.direction.x < 0 and right_edge.colliderect(self.player.rect):
             self.direction = pygame.math.Vector2(-1, 0)
-        elif self.player.direction.y > 0:
+        elif self.player.direction.y > 0 and top_edge.colliderect(self.player.rect):
             self.direction = pygame.math.Vector2(0, 1)
-        elif self.player.direction.y < 0:
+        elif self.player.direction.y < 0 and bottom_edge.colliderect(self.player.rect):
             self.direction = pygame.math.Vector2(0, -1)
 
     def move(self):

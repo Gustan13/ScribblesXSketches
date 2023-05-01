@@ -49,3 +49,7 @@ A bomberman clone.
   - [ ] Add level select menu
   - [ ] Add settings menu
   - [ ] Add credits menu
+
+## Known bugs
+
+- Player can't run into explosion after powerup tile explodes.

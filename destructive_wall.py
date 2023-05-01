@@ -1,9 +1,11 @@
+from random import choice
+
 import pygame
 
-from random import choice
 
 from tile import Tile
 from powerup import PowerUp
+from settings import EXPLOSION_TIME
 
 
 class DestructiveWall(Tile):
@@ -23,9 +25,10 @@ class DestructiveWall(Tile):
 
         self.is_dead = False
         self.run_timer = True
-        self.timer = 100
+        self.timer = EXPLOSION_TIME
 
     def collision_explosion(self):
+        """Checks collision with explosions."""
         if self.is_dead:
             return
 
@@ -37,6 +40,7 @@ class DestructiveWall(Tile):
             self.is_dead = True
 
     def spawn_powerup(self):
+        """Spawns a powerup after a certain amount of time."""
         if not self.is_dead:
             return
 
@@ -56,5 +60,6 @@ class DestructiveWall(Tile):
             self.timer -= 1
 
     def update(self):
+        """Checks for collision with explosions every frame and spawns powerup if needed."""
         self.collision_explosion()
         self.spawn_powerup()

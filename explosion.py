@@ -1,11 +1,12 @@
 from tile import Tile
+from settings import EXPLOSION_TIME
 
 
 class Explosion(Tile):
     def __init__(self, pos, groups):
         super().__init__(pos, groups, "marcos.png")
 
-        self.timer = 100
+        self.timer = EXPLOSION_TIME
 
     def destroy(self):
         """Destroys the explosion after a certain amount of time."""

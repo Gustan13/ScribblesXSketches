@@ -150,7 +150,7 @@ class Bomb(Tile):
         if not self.can_collide_with_player:
             return False
 
-        player_hit = pygame.sprite.collide_rect_ratio(1.06)(self, self.player)
+        player_hit = pygame.sprite.collide_rect_ratio(1.04)(self, self.player)
 
         return player_hit
 

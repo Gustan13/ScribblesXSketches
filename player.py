@@ -16,6 +16,7 @@ class Player(pygame.sprite.Sprite):
         bomb_sprites,
         powerup_sprites,
         explosion_sprites,
+        destructive_wall_sprites,
     ):
         super().__init__(groups)
 
@@ -32,6 +33,7 @@ class Player(pygame.sprite.Sprite):
         self.obstacle_sprites = obstacle_sprites
         self.bomb_sprites = bomb_sprites
         self.explosion_sprites = explosion_sprites
+        self.destructive_wall_sprites = destructive_wall_sprites
 
         self.bomb_delay = 0
         self.bomb_reload = 5
@@ -73,6 +75,7 @@ class Player(pygame.sprite.Sprite):
             [self.bomb_sprites],
             self.obstacle_sprites,
             self.explosion_sprites,
+            self.destructive_wall_sprites,
             self,
         )
 
@@ -107,16 +110,16 @@ class Player(pygame.sprite.Sprite):
             self.direction = self.direction.normalize()
 
         self.rect.x += int(self.direction.x * self.stats["speed"])
-        self.collision("horizontal")
+        self.collision("horizontal", self.obstacle_sprites)
+        self.collision("horizontal", self.destructive_wall_sprites)
         self.rect.y += int(self.direction.y * self.stats["speed"])
-        self.collision("vertical")
+        self.collision("vertical", self.obstacle_sprites)
+        self.collision("vertical", self.destructive_wall_sprites)
 
-    def collision(self, direction):
+    def collision(self, direction, obstacles):
         """Checks for collisions with obstacles."""
         if direction == "vertical":
-            objects_hit = pygame.sprite.spritecollide(
-                self, self.obstacle_sprites, False
-            )
+            objects_hit = pygame.sprite.spritecollide(self, obstacles, False)
             for sprite in objects_hit:
                 if self.direction.y > 0:  # BAIXO
                     self.rect.bottom = sprite.rect.top
@@ -124,9 +127,7 @@ class Player(pygame.sprite.Sprite):
                     self.rect.top = sprite.rect.bottom
 
         if direction == "horizontal":
-            objects_hit = pygame.sprite.spritecollide(
-                self, self.obstacle_sprites, False
-            )
+            objects_hit = pygame.sprite.spritecollide(self, obstacles, False)
             for sprite in objects_hit:
                 if self.direction.x > 0:  # DIREITA
                     self.rect.right = sprite.rect.left

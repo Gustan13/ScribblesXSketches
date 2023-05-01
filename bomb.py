@@ -8,7 +8,15 @@ from toolbox import check_group_positions, round_to_multiple
 
 
 class Bomb(Tile):
-    def __init__(self, pos, groups, obstacle_sprites, explosion_sprites, player):
+    def __init__(
+        self,
+        pos,
+        groups,
+        obstacle_sprites,
+        explosion_sprites,
+        destructive_wall_sprites,
+        player,
+    ):
         super().__init__(pos, groups, "bomb.png")
 
         self.timer = 100
@@ -17,6 +25,7 @@ class Bomb(Tile):
 
         self.obstacle_sprites = obstacle_sprites
         self.explosion_sprites = explosion_sprites
+        self.destructive_wall_sprites = destructive_wall_sprites
 
     def explode_path(self, row, col, size):
         """Explodes a path of tiles in the four directions."""
@@ -31,6 +40,10 @@ class Bomb(Tile):
             )
         ) and (aux <= size):
             Explosion((col + TILE_SIZE * aux, row), [self.explosion_sprites])
+            if check_group_positions(
+                (col + TILE_SIZE * aux, row), self.destructive_wall_sprites
+            ):
+                break
             aux += 1
 
         aux = 1
@@ -42,6 +55,10 @@ class Bomb(Tile):
             )
         ) and (aux <= size):
             Explosion((col - TILE_SIZE * aux, row), [self.explosion_sprites])
+            if check_group_positions(
+                (col + TILE_SIZE * aux, row), self.destructive_wall_sprites
+            ):
+                break
             aux += 1
 
         aux = 1
@@ -53,6 +70,10 @@ class Bomb(Tile):
             )
         ) and (aux <= size):
             Explosion((col, row + TILE_SIZE * aux), [self.explosion_sprites])
+            if check_group_positions(
+                (col + TILE_SIZE * aux, row), self.destructive_wall_sprites
+            ):
+                break
             aux += 1
 
         aux = 1
@@ -64,6 +85,10 @@ class Bomb(Tile):
             )
         ) and (aux < size + 1):
             Explosion((col, row - TILE_SIZE * aux), [self.explosion_sprites])
+            if check_group_positions(
+                (col + TILE_SIZE * aux, row), self.destructive_wall_sprites
+            ):
+                break
             aux += 1
 
         return

@@ -11,7 +11,7 @@ A bomberman clone.
   - [x] Make bombs explode power ups
   - [x] Make bombs explode players
 
-- [ ] Health system <!-- Binder -->
+- [x] Explosive walls <!-- Binder -->
 
 - [x] Recieve damage from explosion <!-- Binder -->
 

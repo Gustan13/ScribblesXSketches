@@ -6,6 +6,7 @@ from settings import TILE_SIZE, arrayMap
 from tile import Tile
 from powerup import PowerUp
 from player import Player
+from destructive_wall import DestructiveWall
 
 
 class Arena:
@@ -18,14 +19,7 @@ class Arena:
         self.bomb_sprites = pygame.sprite.Group()
         self.powerup_sprites = pygame.sprite.Group()
         self.explosion_sprites = pygame.sprite.Group()
-
-        self.powerup_array = [
-            "max_bombs",
-            "speed",
-            "bomb_range",
-            "ronaldinho",
-            "wifi_explode",
-        ]
+        self.destructive_wall_sprites = pygame.sprite.Group()
 
         self.create_map()
 
@@ -54,6 +48,7 @@ class Arena:
                         self.bomb_sprites,
                         self.powerup_sprites,
                         self.explosion_sprites,
+                        self.destructive_wall_sprites,
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
@@ -61,12 +56,19 @@ class Arena:
                         "grass.png",
                     )
                 elif tile == 3:
-                    PowerUp(
+                    # PowerUp(
+                    #     (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
+                    #     [self.powerup_sprites],
+                    #     # select random powerup
+                    #     choice(self.powerup_array),
+                    #     self.explosion_sprites,
+                    # )
+                    DestructiveWall(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
-                        [self.powerup_sprites],
-                        # select random powerup
-                        choice(self.powerup_array),
+                        [self.destructive_wall_sprites],
+                        "test.png",
                         self.explosion_sprites,
+                        self.powerup_sprites,
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
@@ -77,6 +79,8 @@ class Arena:
     def run(self):
         """Main arena loop."""
         self.visible_sprites.draw(self.display_surface)
+
+        self.destructive_wall_sprites.draw(self.display_surface)
 
         self.bomb_sprites.draw(self.display_surface)
         self.player_sprite.draw(self.display_surface)
@@ -91,3 +95,4 @@ class Arena:
         self.powerup_sprites.update()
         self.obstacle_sprites.update()
         self.explosion_sprites.update()
+        self.destructive_wall_sprites.update()

@@ -1,7 +1,7 @@
 import pathlib
 import pygame
 
-from toolbox import round_to_multiple
+from toolbox import floor_to_multiple
 from settings import HALF_TILE, TILE_SIZE, SPRITES_PATH
 
 from bomb import Bomb
@@ -44,7 +44,7 @@ class Player(pygame.sprite.Sprite):
         self.respawn_point = self.rect.topleft
 
         self.stats = {  # Default stats
-            "max_bombs": 2,
+            "max_bombs": 4,
             "speed": TILE_SIZE // 16,
             "bomb_range": 2,
             "ronaldinho": True,  # Ronaldinho mode true para teste
@@ -65,8 +65,8 @@ class Player(pygame.sprite.Sprite):
             self.bomb_delay -= 1
             return
 
-        x_pos = round_to_multiple(self.rect.x, TILE_SIZE)
-        y_pos = round_to_multiple(self.rect.y, TILE_SIZE)
+        x_pos = floor_to_multiple(self.rect.x, TILE_SIZE)
+        y_pos = floor_to_multiple(self.rect.y, TILE_SIZE)
 
         for bomb in self.bomb_sprites:  # Check if there's already a bomb there
             if (bomb.rect.x == x_pos) and (bomb.rect.y == y_pos):

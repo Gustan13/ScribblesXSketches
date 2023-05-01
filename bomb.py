@@ -3,8 +3,8 @@ import pygame
 from tile import Tile
 from explosion import Explosion
 
-from settings import TILE_SIZE
-from toolbox import check_group_positions, round_to_multiple
+from settings import TILE_SIZE, FPS
+from toolbox import check_group_positions, floor_to_multiple, round_to_nearest
 
 
 class Bomb(Tile):
@@ -20,7 +20,7 @@ class Bomb(Tile):
     ):
         super().__init__(pos, groups, "bomb.png")
 
-        self.timer = 200
+        self.timer = FPS * 4.5  # 4.5 seconds
         self.is_dead = False
 
         self.player_group = player_group[0]
@@ -29,6 +29,8 @@ class Bomb(Tile):
         self.obstacle_sprites = obstacle_sprites
         self.explosion_sprites = explosion_sprites
         self.destructive_wall_sprites = destructive_wall_sprites
+
+        self.bomb_sprite_group = groups[0]
 
         self.can_collide_with_player = False
 
@@ -136,6 +138,23 @@ class Bomb(Tile):
         if explosions_hit:
             self.timer = 0
 
+    def collide_bomb_with_bomb(self):
+        """Checks collision with other bombs"""
+        bombs_hit = pygame.sprite.spritecollide(
+            self, self.bomb_sprite_group, False, pygame.sprite.collide_rect_ratio(1.04)
+        )
+
+        for bomb in bombs_hit:
+            if bomb == self:
+                continue
+
+            if bomb.speed > 0:
+                bomb.speed, self.speed = self.speed, bomb.speed
+                bomb.direction, self.direction = self.direction, bomb.direction
+
+                bomb.rect.x = round_to_nearest(bomb.rect.x, TILE_SIZE)
+                bomb.rect.y = round_to_nearest(bomb.rect.y, TILE_SIZE)
+
     def collide_with_player(self):
         """Checks collision with player"""
         if self.can_collide_with_player:
@@ -207,6 +226,7 @@ class Bomb(Tile):
         """Updates the bomb's timer."""
         self.explosion_collision()
         self.collide_with_player()
+        self.collide_bomb_with_bomb()
 
         if self.is_player_colliding_with_bomb():
             self.kick()
@@ -217,8 +237,8 @@ class Bomb(Tile):
             self.is_dead = True
             self.kill()
             self.explode_path(
-                round_to_multiple(self.rect.y, TILE_SIZE),
-                round_to_multiple(self.rect.x, TILE_SIZE),
+                floor_to_multiple(self.rect.y, TILE_SIZE),
+                floor_to_multiple(self.rect.x, TILE_SIZE),
                 self.player.stats["bomb_range"],
             )
             self.player.current_bombs -= 1

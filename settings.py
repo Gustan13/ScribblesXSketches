@@ -8,7 +8,7 @@ HALF_TILE = TILE_SIZE / 2
 WIDTH = 15 * TILE_SIZE
 HEIGHT = 15 * TILE_SIZE
 
-EXPLOSION_TIME = 100
+EXPLOSION_TIME = 50
 
 arrayMap = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],

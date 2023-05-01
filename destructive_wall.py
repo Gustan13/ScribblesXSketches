@@ -14,6 +14,7 @@ class DestructiveWall(Tile):
 
         self.explosion_sprites = explosion_sprites
         self.powerup_sprites = poweup_sprites
+        self.wall_sprites = groups[0]
 
         self.powerup_array = [
             "max_bombs",
@@ -38,6 +39,7 @@ class DestructiveWall(Tile):
 
         if explosions_hit:
             self.is_dead = True
+            self.wall_sprites.remove(self)
 
     def spawn_powerup(self):
         """Spawns a powerup after a certain amount of time."""

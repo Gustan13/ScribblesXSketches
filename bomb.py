@@ -154,6 +154,24 @@ class Bomb(Tile):
 
         return player_hit
 
+    def calculate_edge_collision(self):
+        """Calculates the edges of the bomb and player"""
+        left_edge = pygame.Rect(
+            self.rect.topleft[0] - 1, self.rect.topleft[1], 1, TILE_SIZE
+        )
+        top_edge = pygame.Rect(
+            self.rect.topleft[0], self.rect.topleft[1] - 1, TILE_SIZE, 1
+        )
+        right_edge = pygame.Rect(*self.rect.topright, 1, TILE_SIZE)
+        bottom_edge = pygame.Rect(*self.rect.bottomleft, TILE_SIZE, 1)
+
+        return (
+            left_edge.colliderect(self.player.rect),
+            top_edge.colliderect(self.player.rect),
+            right_edge.colliderect(self.player.rect),
+            bottom_edge.colliderect(self.player.rect),
+        )
+
     def kick(self):
         """Kicks the bomb in the direction the player is facing"""
         if not self.player.stats["ronaldinho"]:
@@ -162,19 +180,16 @@ class Bomb(Tile):
         # if player has ronaldinho powerup, make the bomb move at the same direction as player
 
         self.speed = 4
-        # check if player is colliding with the top left edge of the bomb
-        left_edge = pygame.Rect(*self.rect.topleft, 2, TILE_SIZE)
-        top_edge = pygame.Rect(*self.rect.topleft, TILE_SIZE, 2)
-        right_edge = pygame.Rect(*self.rect.topright, 2, TILE_SIZE)
-        bottom_edge = pygame.Rect(*self.rect.bottomleft, TILE_SIZE, 2)
 
-        if self.player.direction.x > 0 and left_edge.colliderect(self.player.rect):
+        left, top, right, bottom = self.calculate_edge_collision()
+
+        if self.player.direction.x > 0 and left:
             self.direction = pygame.math.Vector2(1, 0)
-        elif self.player.direction.x < 0 and right_edge.colliderect(self.player.rect):
+        elif self.player.direction.x < 0 and right:
             self.direction = pygame.math.Vector2(-1, 0)
-        elif self.player.direction.y > 0 and top_edge.colliderect(self.player.rect):
+        elif self.player.direction.y > 0 and top:
             self.direction = pygame.math.Vector2(0, 1)
-        elif self.player.direction.y < 0 and bottom_edge.colliderect(self.player.rect):
+        elif self.player.direction.y < 0 and bottom:
             self.direction = pygame.math.Vector2(0, -1)
 
     def move(self):
@@ -188,8 +203,8 @@ class Bomb(Tile):
         """Updates the bomb's timer."""
         self.explosion_collision()
         self.collide_with_player()
+
         if self.is_player_colliding_with_bomb():
-            print("player hit bomb")
             self.kick()
 
         if self.timer > 0:

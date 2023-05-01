@@ -32,6 +32,8 @@ class Bomb(Tile):
 
         self.can_collide_with_player = False
 
+        self.is_bomb = True
+
         self.speed = 2
         self.direction = pygame.math.Vector2(0, 0)
 
@@ -196,8 +198,10 @@ class Bomb(Tile):
         """Moves the bomb."""
         self.rect.x += int(self.direction.x * self.speed)
         self.collision("horizontal", self.obstacle_sprites)
+        self.collision("horizontal", self.destructive_wall_sprites)
         self.rect.y += int(self.direction.y * self.speed)
         self.collision("vertical", self.obstacle_sprites)
+        self.collision("vertical", self.destructive_wall_sprites)
 
     def update(self):
         """Updates the bomb's timer."""

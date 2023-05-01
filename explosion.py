@@ -4,7 +4,7 @@ from settings import EXPLOSION_TIME
 
 class Explosion(Tile):
     def __init__(self, pos, groups):
-        super().__init__(pos, groups, "marcos.png")
+        super().__init__(pos, groups, "explosion.png")
 
         self.timer = EXPLOSION_TIME
 

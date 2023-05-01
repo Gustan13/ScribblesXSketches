@@ -91,5 +91,6 @@ class Arena:
         self.bomb_sprites.update()
         self.powerup_sprites.update()
         self.obstacle_sprites.update()
+        self.visible_sprites.update()
         self.explosion_sprites.update()
         self.destructive_wall_sprites.update()

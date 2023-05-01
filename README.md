@@ -52,4 +52,4 @@ A bomberman clone.
 
 ## Known bugs
 
-- Player can't run into explosion after powerup tile explodes.
+- ˜˜Player can't run into explosion after powerup tile explodes.˜˜ FIXED

@@ -62,7 +62,7 @@ class Arena:
                     # )
                     DestructiveWall(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
-                        [self.destructive_wall_sprites],
+                        [self.destructive_wall_sprites, self.visible_sprites],
                         "destructive_wall.png",
                         self.explosion_sprites,
                         self.powerup_sprites,

@@ -14,6 +14,7 @@ class DestructiveWall(Tile):
 
         self.explosion_sprites = explosion_sprites
         self.powerup_sprites = poweup_sprites
+        self.wall_sprites = groups[0]
 
         self.powerup_array = POWERUPS_ARRAY
 
@@ -33,6 +34,7 @@ class DestructiveWall(Tile):
 
         if explosions_hit:
             self.is_dead = True
+            self.wall_sprites.remove(self)
 
     def destroy(self):
         """Destroys the wall and spawns a powerup."""

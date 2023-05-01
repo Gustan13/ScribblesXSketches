@@ -21,6 +21,8 @@ class Player(pygame.sprite.Sprite):
     ):
         super().__init__(groups)
 
+        self.player_group = groups
+
         self.image = pygame.image.load(pathlib.Path(SPRITES_PATH, image_name))
         self.image = pygame.transform.scale(self.image, (HALF_TILE, HALF_TILE))
 
@@ -44,8 +46,8 @@ class Player(pygame.sprite.Sprite):
         self.stats = {  # Default stats
             "max_bombs": 2,
             "speed": TILE_SIZE // 16,
-            "bomb_range": 1,
-            "ronaldinho": False,
+            "bomb_range": 2,
+            "ronaldinho": True,  # Ronaldinho mode true para teste
             "wifi_explode": False,
         }
         self.bomb_range = 1
@@ -77,6 +79,7 @@ class Player(pygame.sprite.Sprite):
             self.obstacle_sprites,
             self.explosion_sprites,
             self.destructive_wall_sprites,
+            self.player_group,
             self,
         )
 
@@ -151,7 +154,7 @@ class Player(pygame.sprite.Sprite):
             self, self.explosion_sprites, False
         )
 
-        if len(explosions_hit) != 0:
+        if explosions_hit:
             self.rect.topleft = self.respawn_point
 
     def update(self):

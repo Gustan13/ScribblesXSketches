@@ -1,10 +1,7 @@
 import pygame
 
-from random import choice
-
 from settings import TILE_SIZE, arrayMap
 from tile import Tile
-from powerup import PowerUp
 from player import Player
 from destructive_wall import DestructiveWall
 
@@ -15,7 +12,7 @@ class Arena:
 
         self.visible_sprites = pygame.sprite.Group()
         self.obstacle_sprites = pygame.sprite.Group()
-        self.player_sprite = pygame.sprite.GroupSingle()
+        self.player_sprite = pygame.sprite.Group()
         self.bomb_sprites = pygame.sprite.Group()
         self.powerup_sprites = pygame.sprite.Group()
         self.explosion_sprites = pygame.sprite.Group()

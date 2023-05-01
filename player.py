@@ -2,7 +2,7 @@ import pathlib
 import pygame
 
 from toolbox import floor_to_multiple
-from settings import HALF_TILE, TILE_SIZE, SPRITES_PATH
+from settings import HALF_TILE, TILE_SIZE, SPRITES_PATH, DEFAULT_POWERUP_STATS
 
 from bomb import Bomb
 
@@ -43,13 +43,7 @@ class Player(pygame.sprite.Sprite):
 
         self.respawn_point = self.rect.topleft
 
-        self.stats = {  # Default stats
-            "max_bombs": 4,
-            "speed": TILE_SIZE // 16,
-            "bomb_range": 2,
-            "ronaldinho": True,  # Ronaldinho mode true para teste
-            "wifi_explode": False,
-        }
+        self.stats = DEFAULT_POWERUP_STATS.copy()
 
         self.powerup_sprites = powerup_sprites
 

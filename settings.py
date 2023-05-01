@@ -10,6 +10,19 @@ HEIGHT = 15 * TILE_SIZE
 
 EXPLOSION_TIME = 50
 
+DEFAULT_POWERUP_STATS = {  # Default stats
+    "max_bombs": 4,
+    "speed": TILE_SIZE // 16,
+    "bomb_range": 2,
+    "ronaldinho": True,  # Ronaldinho mode true para teste
+    "wifi_explode": False,
+}
+
+POWERUPS_ARRAY = list(
+    DEFAULT_POWERUP_STATS.keys()
+)  # Array with powerups on DEFAULT_POWERUP_STATS
+
+
 arrayMap = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],

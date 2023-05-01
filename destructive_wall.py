@@ -5,7 +5,7 @@ import pygame
 
 from tile import Tile
 from powerup import PowerUp
-from settings import EXPLOSION_TIME
+from settings import EXPLOSION_TIME, POWERUPS_ARRAY
 
 
 class DestructiveWall(Tile):
@@ -15,16 +15,11 @@ class DestructiveWall(Tile):
         self.explosion_sprites = explosion_sprites
         self.powerup_sprites = poweup_sprites
 
-        self.powerup_array = [
-            "max_bombs",
-            "speed",
-            "bomb_range",
-            "ronaldinho",
-            "wifi_explode",
-        ]
+        self.powerup_array = POWERUPS_ARRAY
 
         self.is_dead = False
         self.run_timer = True
+
         self.timer = EXPLOSION_TIME
 
     def collision_explosion(self):
@@ -39,6 +34,17 @@ class DestructiveWall(Tile):
         if explosions_hit:
             self.is_dead = True
 
+    def destroy(self):
+        """Destroys the wall and spawns a powerup."""
+        PowerUp(
+            (self.rect.x, self.rect.y),
+            [self.powerup_sprites],
+            choice(self.powerup_array),
+            self.explosion_sprites,
+        )
+        self.run_timer = False
+        self.kill()
+
     def spawn_powerup(self):
         """Spawns a powerup after a certain amount of time."""
         if not self.is_dead:
@@ -48,14 +54,7 @@ class DestructiveWall(Tile):
             return
 
         if self.timer < 0:
-            PowerUp(
-                (self.rect.x, self.rect.y),
-                [self.powerup_sprites],
-                choice(self.powerup_array),
-                self.explosion_sprites,
-            )
-            self.run_timer = False
-            self.kill()
+            self.destroy()
         else:
             self.timer -= 1
 

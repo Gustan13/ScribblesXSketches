@@ -56,7 +56,7 @@ class Bomb(Tile):
         ) and (aux <= size):
             Explosion((col - TILE_SIZE * aux, row), [self.explosion_sprites])
             if check_group_positions(
-                (col + TILE_SIZE * aux, row), self.destructive_wall_sprites
+                (col - TILE_SIZE * aux, row), self.destructive_wall_sprites
             ):
                 break
             aux += 1
@@ -71,7 +71,7 @@ class Bomb(Tile):
         ) and (aux <= size):
             Explosion((col, row + TILE_SIZE * aux), [self.explosion_sprites])
             if check_group_positions(
-                (col + TILE_SIZE * aux, row), self.destructive_wall_sprites
+                (col, row + TILE_SIZE * aux), self.destructive_wall_sprites
             ):
                 break
             aux += 1
@@ -86,7 +86,7 @@ class Bomb(Tile):
         ) and (aux < size + 1):
             Explosion((col, row - TILE_SIZE * aux), [self.explosion_sprites])
             if check_group_positions(
-                (col + TILE_SIZE * aux, row), self.destructive_wall_sprites
+                (col, row - TILE_SIZE * aux), self.destructive_wall_sprites
             ):
                 break
             aux += 1

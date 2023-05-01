@@ -53,7 +53,9 @@ class DestructiveWall(Tile):
         if not self.run_timer:
             return
 
-        if self.timer < 0:
+        # this <= 0 prevents the destructive_wall to appear for 1 frame before the powerup.
+        # Since the logic in explosion.py is self.timer > 0.
+        if self.timer <= 0:
             self.destroy()
         else:
             self.timer -= 1

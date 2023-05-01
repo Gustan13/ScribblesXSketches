@@ -1,3 +1,4 @@
+import pathlib
 import pygame
 
 from toolbox import round_to_multiple
@@ -20,7 +21,7 @@ class Player(pygame.sprite.Sprite):
     ):
         super().__init__(groups)
 
-        self.image = pygame.image.load(f"{SPRITES_PATH}/{image_name}")
+        self.image = pygame.image.load(pathlib.Path(SPRITES_PATH, image_name))
         self.image = pygame.transform.scale(self.image, (HALF_TILE, HALF_TILE))
 
         self.rect = self.image.get_rect(topleft=pos)

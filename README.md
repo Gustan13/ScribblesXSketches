@@ -15,7 +15,7 @@ A bomberman clone.
 
 - [x] Recieve damage from explosion <!-- Binder -->
 
-- [x] Animation system <!-- Binder -->
+- [ ] Animation system <!-- Binder -->
 
 - [x] Add power ups <!-- Marcelo -->
 

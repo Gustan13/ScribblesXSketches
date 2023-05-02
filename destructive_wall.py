@@ -5,7 +5,7 @@ import pygame
 
 from tile import Tile
 from powerup import PowerUp
-from settings import EXPLOSION_TIME
+from settings import EXPLOSION_TIME, POWERUPS_ARRAY
 
 
 class DestructiveWall(Tile):
@@ -16,16 +16,11 @@ class DestructiveWall(Tile):
         self.powerup_sprites = poweup_sprites
         self.wall_sprites = groups[0]
 
-        self.powerup_array = [
-            "max_bombs",
-            "speed",
-            "bomb_range",
-            "ronaldinho",
-            "wifi_explode",
-        ]
+        self.powerup_array = POWERUPS_ARRAY
 
         self.is_dead = False
         self.run_timer = True
+
         self.timer = EXPLOSION_TIME
 
     def collision_explosion(self):
@@ -41,6 +36,17 @@ class DestructiveWall(Tile):
             self.is_dead = True
             self.wall_sprites.remove(self)
 
+    def destroy(self):
+        """Destroys the wall and spawns a powerup."""
+        PowerUp(
+            (self.rect.x, self.rect.y),
+            [self.powerup_sprites],
+            choice(self.powerup_array),
+            self.explosion_sprites,
+        )
+        self.run_timer = False
+        self.kill()
+
     def spawn_powerup(self):
         """Spawns a powerup after a certain amount of time."""
         if not self.is_dead:
@@ -49,15 +55,10 @@ class DestructiveWall(Tile):
         if not self.run_timer:
             return
 
-        if self.timer < 0:
-            PowerUp(
-                (self.rect.x, self.rect.y),
-                [self.powerup_sprites],
-                choice(self.powerup_array),
-                self.explosion_sprites,
-            )
-            self.run_timer = False
-            self.kill()
+        # this <= 0 prevents the destructive_wall to appear for 1 frame before the powerup.
+        # Since the logic in explosion.py is self.timer > 0.
+        if self.timer <= 0:
+            self.destroy()
         else:
             self.timer -= 1
 

@@ -1,8 +1,8 @@
 import pathlib
 import pygame
 
-from toolbox import round_to_multiple
-from settings import HALF_TILE, TILE_SIZE, SPRITES_PATH
+from toolbox import floor_to_multiple
+from settings import HALF_TILE, TILE_SIZE, SPRITES_PATH, DEFAULT_POWERUP_STATS
 
 from bomb import Bomb
 
@@ -20,6 +20,8 @@ class Player(pygame.sprite.Sprite):
         destructive_wall_sprites,
     ):
         super().__init__(groups)
+
+        self.player_group = groups
 
         self.image = pygame.image.load(pathlib.Path(SPRITES_PATH, image_name))
         self.image = pygame.transform.scale(self.image, (HALF_TILE, HALF_TILE))
@@ -41,14 +43,7 @@ class Player(pygame.sprite.Sprite):
 
         self.respawn_point = self.rect.topleft
 
-        self.stats = {  # Default stats
-            "max_bombs": 2,
-            "speed": TILE_SIZE // 16,
-            "bomb_range": 1,
-            "ronaldinho": False,
-            "wifi_explode": False,
-        }
-        self.bomb_range = 1
+        self.stats = DEFAULT_POWERUP_STATS.copy()
 
         self.powerup_sprites = powerup_sprites
 
@@ -59,12 +54,15 @@ class Player(pygame.sprite.Sprite):
         if self.current_bombs >= self.stats["max_bombs"]:
             return
 
+        if self.current_bombs == 1:  # first bomb has no cooldown
+            self.bomb_delay = 0
+
         if self.bomb_delay > 0:
             self.bomb_delay -= 1
             return
 
-        x_pos = round_to_multiple(self.rect.x, TILE_SIZE)
-        y_pos = round_to_multiple(self.rect.y, TILE_SIZE)
+        x_pos = floor_to_multiple(self.rect.x, TILE_SIZE)
+        y_pos = floor_to_multiple(self.rect.y, TILE_SIZE)
 
         for bomb in self.bomb_sprites:  # Check if there's already a bomb there
             if (bomb.rect.x == x_pos) and (bomb.rect.y == y_pos):
@@ -77,6 +75,7 @@ class Player(pygame.sprite.Sprite):
             self.obstacle_sprites,
             self.explosion_sprites,
             self.destructive_wall_sprites,
+            self.player_group,
             self,
         )
 
@@ -151,7 +150,7 @@ class Player(pygame.sprite.Sprite):
             self, self.explosion_sprites, False
         )
 
-        if len(explosions_hit) != 0:
+        if explosions_hit:
             self.rect.topleft = self.respawn_point
 
     def update(self):

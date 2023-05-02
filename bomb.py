@@ -3,8 +3,8 @@ import pygame
 from tile import Tile
 from explosion import Explosion
 
-from settings import TILE_SIZE, FPS
-from toolbox import check_group_positions, round_to_nearest
+from settings import TILE_SIZE, FPS, HALF_TILE
+from toolbox import check_group_positions, round_to_nearest, floor_to_multiple
 
 
 class Bomb(Tile):
@@ -36,7 +36,7 @@ class Bomb(Tile):
 
         self.is_bomb = True
 
-        self.speed = 2
+        self.speed = 0
         self.direction = pygame.math.Vector2(0, 0)
 
     def collision(self, direction, obstacles):
@@ -52,6 +52,8 @@ class Bomb(Tile):
                 elif self.direction.y < 0:  # CIMA
                     self.rect.top = sprite.rect.bottom
 
+                self.speed = 0
+
         if direction == "horizontal":
             objects_hit = pygame.sprite.spritecollide(self, obstacles, False)
             for sprite in objects_hit:
@@ -62,6 +64,8 @@ class Bomb(Tile):
                     self.rect.right = sprite.rect.left
                 elif self.direction.x < 0:  # ESQUERDA
                     self.rect.left = sprite.rect.right
+
+                self.speed = 0
 
     def explode_path(self, row, col, size):
         """Explodes a path of tiles in the four directions."""
@@ -173,7 +177,38 @@ class Bomb(Tile):
 
         player_hit = pygame.sprite.collide_rect_ratio(1.04)(self, self.player)
 
+        if player_hit:
+            self.direction.x *= -1
+            self.direction.y *= -1
+
         return player_hit
+
+    def collide_with_other_player(self):
+        other_player = None
+
+        for player in self.player_group:
+            if player != self.player:
+                other_player = player
+
+        player_hit = pygame.sprite.collide_rect_ratio(1.04)(self, other_player)
+
+        if player_hit:
+            if other_player.stats["ronaldinho"]:
+                self.direction.x *= -1
+                self.direction.y *= -1
+                return
+
+            if self.speed > 0:
+                self.rect.x = (
+                    floor_to_multiple(other_player.rect.x, TILE_SIZE)
+                    - TILE_SIZE * self.direction.x
+                )
+                self.rect.y = (
+                    floor_to_multiple(other_player.rect.y, TILE_SIZE)
+                    - TILE_SIZE * self.direction.y
+                )
+
+            self.speed = 0
 
     def calculate_edge_collision(self):
         """Calculates the edges of the bomb and player"""
@@ -230,6 +265,7 @@ class Bomb(Tile):
         """Updates the bomb's timer."""
         self.explosion_collision()
         self.collide_with_player()
+        self.collide_with_other_player()
         self.collide_bomb_with_bomb()
 
         if self.is_player_colliding_with_bomb():

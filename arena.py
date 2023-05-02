@@ -47,7 +47,6 @@ class Arena:
                         self.explosion_sprites,
                         self.destructive_wall_sprites,
                         "marcos",
-                        0,
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
@@ -68,24 +67,6 @@ class Arena:
                         "destructive_wall.png",
                         self.explosion_sprites,
                         self.powerup_sprites,
-                    )
-                    Tile(
-                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
-                        [self.visible_sprites],
-                        "grass.png",
-                    )
-                elif tile == 4:
-                    Player(
-                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
-                        [self.player_sprite],
-                        "marcos1.png",
-                        self.obstacle_sprites,
-                        self.bomb_sprites,
-                        self.powerup_sprites,
-                        self.explosion_sprites,
-                        self.destructive_wall_sprites,
-                        "marcos",
-                        1,
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),

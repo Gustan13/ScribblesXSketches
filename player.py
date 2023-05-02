@@ -20,6 +20,7 @@ class Player(pygame.sprite.Sprite):
         explosion_sprites,
         destructive_wall_sprites,
         name,
+        player_type,
     ):
         super().__init__(groups)
 
@@ -55,6 +56,8 @@ class Player(pygame.sprite.Sprite):
 
         self.idle_animation = Animation(name, 2, 5, HALF_TILE)
         self.walk_animation = Animation(name + "_walk_", 3, 5, HALF_TILE)
+
+        self.player_type = player_type
 
     def explode_bomb_wifi(self):
         """Explodes the player's bombs."""
@@ -109,7 +112,7 @@ class Player(pygame.sprite.Sprite):
 
         self.current_bombs += 1
 
-    def input(self):
+    def player_one_input(self):
         """Handles player input."""
         keys = pygame.key.get_pressed()
 
@@ -127,10 +130,34 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_z]:
+        if keys[pygame.K_o]:
             self.spawn_bomb()
 
-        if keys[pygame.K_x]:
+        if keys[pygame.K_p]:
+            self.explode_bomb_wifi()
+
+    def player_two_input(self):
+        """Handles player input."""
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_w]:
+            self.direction.y = -1
+        elif keys[pygame.K_s]:
+            self.direction.y = 1
+        else:
+            self.direction.y = 0
+
+        if keys[pygame.K_d]:
+            self.direction.x = 1
+        elif keys[pygame.K_a]:
+            self.direction.x = -1
+        else:
+            self.direction.x = 0
+
+        if keys[pygame.K_c]:
+            self.spawn_bomb()
+
+        if keys[pygame.K_v]:
             self.explode_bomb_wifi()
 
     def move(self):
@@ -197,7 +224,10 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         """Main player loop that runs every frame."""
-        self.input()
+        if self.player_type == 0:
+            self.player_one_input()
+        else:
+            self.player_two_input()
         self.move()
         self.powerup()
         self.explosions()

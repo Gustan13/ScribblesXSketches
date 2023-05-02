@@ -8,13 +8,13 @@ HALF_TILE = TILE_SIZE / 2
 WIDTH = 15 * TILE_SIZE
 HEIGHT = 15 * TILE_SIZE
 
-EXPLOSION_TIME = 50
+EXPLOSION_TIME = 20
 
 DEFAULT_POWERUP_STATS = {  # Default stats
     "max_bombs": 4,
     "speed": TILE_SIZE // 16,
     "bomb_range": 2,
-    "ronaldinho": True,  # Ronaldinho mode true para teste
+    "ronaldinho": False,  # Ronaldinho mode true para teste
     "wifi_explode": False,
 }
 

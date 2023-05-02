@@ -39,12 +39,20 @@ class Bomb(Tile):
         self.speed = 0
         self.direction = pygame.math.Vector2(0, 0)
 
+        self.kicker = None
+
     def collision(self, direction, obstacles):
         """Checks for collisions with obstacles."""
         if direction == "vertical":
             objects_hit = pygame.sprite.spritecollide(self, obstacles, False)
             for sprite in objects_hit:
                 if sprite == self:
+                    continue
+
+                if self.bomb_sprite_group.has(sprite):
+                    print("ajj")
+                    self.collide_bomb_with_bomb(sprite)
+                    self.speed = 0
                     continue
 
                 if self.direction.y > 0:  # BAIXO
@@ -58,6 +66,11 @@ class Bomb(Tile):
             objects_hit = pygame.sprite.spritecollide(self, obstacles, False)
             for sprite in objects_hit:
                 if sprite == self:
+                    continue
+
+                if self.bomb_sprite_group.has(sprite):
+                    self.collide_bomb_with_bomb(sprite)
+                    self.speed = 0
                     continue
 
                 if self.direction.x > 0:  # DIREITA
@@ -142,73 +155,79 @@ class Bomb(Tile):
         if explosions_hit:
             self.explode()
 
-    def collide_bomb_with_bomb(self):
+    def collide_bomb_with_bomb(self, bomb):
         """Checks collision with other bombs"""
-        bombs_hit = pygame.sprite.spritecollide(
-            self, self.bomb_sprite_group, False, pygame.sprite.collide_rect_ratio(1.04)
-        )
+        # # bombs_hit = pygame.sprite.spritecollide(
+        # #     self, self.bomb_sprite_group, False, pygame.sprite.collide_rect_ratio(1)
+        # # )
 
-        for bomb in bombs_hit:
-            if bomb == self:
-                continue
+        # # for bomb in bombs_hit:
+        # #     if bomb == self:
+        # #         continue
 
-            if bomb.speed > 0:
-                bomb.speed, self.speed = self.speed, bomb.speed
-                bomb.direction, self.direction = self.direction, bomb.direction
+        # if bomb.speed > 0:
+        #     bomb.speed, self.speed = self.speed, bomb.speed
+        #     bomb.direction, self.direction = self.direction, bomb.direction
 
-                bomb.rect.x = round_to_nearest(bomb.rect.x, TILE_SIZE)
-                bomb.rect.y = round_to_nearest(bomb.rect.y, TILE_SIZE)
+        #     bomb.rect.x = round_to_nearest(bomb.rect.x, TILE_SIZE)
+        #     bomb.rect.y = round_to_nearest(bomb.rect.y, TILE_SIZE)
+
+        bomb.speed, self.speed = self.speed, bomb.speed
+        bomb.direction, self.direction = self.direction, bomb.direction
+
+        self.rect.x = round_to_nearest(self.rect.x, TILE_SIZE)
+        self.rect.y = round_to_nearest(self.rect.y, TILE_SIZE)
 
     def collide_with_player(self):
         """Checks collision with player"""
         if self.can_collide_with_player:
             return
 
-        player_hit = pygame.sprite.collide_rect_ratio(1.10)(self, self.player)
+        not_collided = True
 
-        if not player_hit:
-            self.obstacle_sprites.add(self)
-            self.can_collide_with_player = True
+        player_hit = pygame.sprite.spritecollide(
+            self, self.player_group, False, pygame.sprite.collide_rect_ratio(1)
+        )
+
+        for player in player_hit:
+            if player != self.player:
+                player.collision("horizontal", [self])
+                player.collision("vertical", [self])
+            else:
+                not_collided = False
+
+        if not not_collided:
+            return
+
+        self.can_collide_with_player = True
+        self.obstacle_sprites.add(self)
 
     def is_player_colliding_with_bomb(self):
         """Checks if player is colliding with bomb"""
         if not self.can_collide_with_player:
             return False
 
-        player_hit = pygame.sprite.collide_rect_ratio(1.04)(self, self.player)
+        # player_hit = pygame.sprite.collide_rect_ratio(1.01)(self, self.player)
+        player_hit = pygame.sprite.spritecollide(
+            self, self.player_group, False, pygame.sprite.collide_rect_ratio(1.04)
+        )
 
-        if player_hit:
-            self.direction.x *= -1
-            self.direction.y *= -1
+        if len(player_hit) == 2:
+            self.explode()
+            return
 
-        return player_hit
-
-    def collide_with_other_player(self):
-        other_player = None
-
-        for player in self.player_group:
-            if player != self.player:
-                other_player = player
-
-        player_hit = pygame.sprite.collide_rect_ratio(1.04)(self, other_player)
-
-        if player_hit:
-            if other_player.stats["ronaldinho"]:
+        for player in player_hit:
+            print(player.name)
+            if not player.stats["ronaldinho"]:
+                self.speed = 0
+                continue
+            else:
+                self.kicker = player
                 self.direction.x *= -1
                 self.direction.y *= -1
-                return
+                return True
 
-            if self.speed > 0:
-                self.rect.x = (
-                    floor_to_multiple(other_player.rect.x, TILE_SIZE)
-                    - TILE_SIZE * self.direction.x
-                )
-                self.rect.y = (
-                    floor_to_multiple(other_player.rect.y, TILE_SIZE)
-                    - TILE_SIZE * self.direction.y
-                )
-
-            self.speed = 0
+        return False
 
     def calculate_edge_collision(self):
         """Calculates the edges of the bomb and player"""
@@ -222,15 +241,15 @@ class Bomb(Tile):
         bottom_edge = pygame.Rect(*self.rect.bottomleft, TILE_SIZE, 1)
 
         return (
-            left_edge.colliderect(self.player.rect),
-            top_edge.colliderect(self.player.rect),
-            right_edge.colliderect(self.player.rect),
-            bottom_edge.colliderect(self.player.rect),
+            left_edge.colliderect(self.kicker.rect),
+            top_edge.colliderect(self.kicker.rect),
+            right_edge.colliderect(self.kicker.rect),
+            bottom_edge.colliderect(self.kicker.rect),
         )
 
     def kick(self):
         """Kicks the bomb in the direction the player is facing"""
-        if not self.player.stats["ronaldinho"]:
+        if not self.kicker.stats["ronaldinho"]:
             return
 
         # if player has ronaldinho powerup, make the bomb move at the same direction as player
@@ -239,13 +258,13 @@ class Bomb(Tile):
 
         left, top, right, bottom = self.calculate_edge_collision()
 
-        if self.player.direction.x > 0 and left:
+        if self.kicker.direction.x > 0 and left:
             self.direction = pygame.math.Vector2(1, 0)
-        elif self.player.direction.x < 0 and right:
+        elif self.kicker.direction.x < 0 and right:
             self.direction = pygame.math.Vector2(-1, 0)
-        elif self.player.direction.y > 0 and top:
+        elif self.kicker.direction.y > 0 and top:
             self.direction = pygame.math.Vector2(0, 1)
-        elif self.player.direction.y < 0 and bottom:
+        elif self.kicker.direction.y < 0 and bottom:
             self.direction = pygame.math.Vector2(0, -1)
 
     def move(self):
@@ -265,10 +284,10 @@ class Bomb(Tile):
         """Updates the bomb's timer."""
         self.explosion_collision()
         self.collide_with_player()
-        self.collide_with_other_player()
-        self.collide_bomb_with_bomb()
+        # self.collide_bomb_with_bomb()
 
         if self.is_player_colliding_with_bomb():
+            print("hello")
             self.kick()
 
         if self.timer > 0 and self.player.stats["wifi_explode"] is False:

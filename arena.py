@@ -2,8 +2,10 @@ import pygame
 
 from settings import TILE_SIZE, arrayMap
 from tile import Tile
-from player import Player
+from marcos import Marcos
+from daniel import Daniel
 from destructive_wall import DestructiveWall
+from powerup import PowerUp
 
 
 class Arena:
@@ -37,7 +39,7 @@ class Arena:
                         "grass.png",
                     )
                 elif tile == 2:
-                    Player(
+                    Marcos(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.player_sprite],
                         "marcos1.png",
@@ -46,7 +48,6 @@ class Arena:
                         self.powerup_sprites,
                         self.explosion_sprites,
                         self.destructive_wall_sprites,
-                        "marcos",
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
@@ -67,6 +68,34 @@ class Arena:
                         "destructive_wall.png",
                         self.explosion_sprites,
                         self.powerup_sprites,
+                    )
+                    Tile(
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
+                        [self.visible_sprites],
+                        "grass.png",
+                    )
+                elif tile == 4:
+                    Daniel(
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
+                        [self.player_sprite],
+                        "marcos1.png",
+                        self.obstacle_sprites,
+                        self.bomb_sprites,
+                        self.powerup_sprites,
+                        self.explosion_sprites,
+                        self.destructive_wall_sprites,
+                    )
+                    Tile(
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
+                        [self.visible_sprites],
+                        "grass.png",
+                    )
+                elif tile == 5:
+                    PowerUp(
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
+                        [self.powerup_sprites],
+                        "ronaldinho",
+                        self.explosion_sprites,
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),

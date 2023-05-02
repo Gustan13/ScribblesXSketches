@@ -66,7 +66,10 @@ class Player(pygame.sprite.Sprite):
 
         self.wifi_timer = FPS / 4  # reset the timer
 
-        self.bomb_sprites.sprites()[0].explode()  # make the first bomb explode
+        for bomb in self.bomb_sprites.sprites():
+            if bomb.player == self:
+                bomb.explode()  # make the first bomb explode
+                break
 
     def update_wifi_timer(self):
         """Updates the wifi timer."""
@@ -110,28 +113,7 @@ class Player(pygame.sprite.Sprite):
         self.current_bombs += 1
 
     def input(self):
-        """Handles player input."""
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_UP]:
-            self.direction.y = -1
-        elif keys[pygame.K_DOWN]:
-            self.direction.y = 1
-        else:
-            self.direction.y = 0
-
-        if keys[pygame.K_RIGHT]:
-            self.direction.x = 1
-        elif keys[pygame.K_LEFT]:
-            self.direction.x = -1
-        else:
-            self.direction.x = 0
-
-        if keys[pygame.K_z]:
-            self.spawn_bomb()
-
-        if keys[pygame.K_x]:
-            self.explode_bomb_wifi()
+        pass
 
     def move(self):
         """Moves the player."""

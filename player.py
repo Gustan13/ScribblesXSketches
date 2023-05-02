@@ -2,7 +2,7 @@ import pathlib
 import pygame
 
 from toolbox import floor_to_multiple
-from settings import HALF_TILE, TILE_SIZE, SPRITES_PATH, DEFAULT_POWERUP_STATS
+from settings import FPS, HALF_TILE, TILE_SIZE, SPRITES_PATH, DEFAULT_POWERUP_STATS
 
 from bomb import Bomb
 
@@ -49,6 +49,28 @@ class Player(pygame.sprite.Sprite):
 
         self.current_bombs = 0
 
+        self.wifi_timer = FPS / 4  # 1/4 of frame (15ms in 60fps)
+
+    def explode_bomb_wifi(self):
+        """Explodes the player's bombs."""
+        if self.stats["wifi_explode"] is False:
+            return
+
+        if self.current_bombs == 0 or self.wifi_timer > 0:
+            return
+
+        self.wifi_timer = FPS / 4  # reset the timer
+
+        self.bomb_sprites.sprites()[0].explode()  # make the first bomb explode
+
+    def update_wifi_timer(self):
+        """Updates the wifi timer."""
+        if self.stats["wifi_explode"] is False:
+            return
+
+        if self.wifi_timer > 0:
+            self.wifi_timer -= 1
+
     def spawn_bomb(self):
         """Spawns a bomb at the player's position."""
         if self.current_bombs >= self.stats["max_bombs"]:
@@ -66,7 +88,6 @@ class Player(pygame.sprite.Sprite):
 
         for bomb in self.bomb_sprites:  # Check if there's already a bomb there
             if (bomb.rect.x == x_pos) and (bomb.rect.y == y_pos):
-                print("There's already a bomb there!")
                 return
 
         Bomb(
@@ -103,6 +124,9 @@ class Player(pygame.sprite.Sprite):
 
         if keys[pygame.K_z]:
             self.spawn_bomb()
+
+        if keys[pygame.K_x]:
+            self.explode_bomb_wifi()
 
     def move(self):
         """Moves the player."""
@@ -159,3 +183,4 @@ class Player(pygame.sprite.Sprite):
         self.move()
         self.powerup()
         self.explosions()
+        self.update_wifi_timer()

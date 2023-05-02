@@ -4,7 +4,7 @@ from tile import Tile
 from explosion import Explosion
 
 from settings import TILE_SIZE, FPS
-from toolbox import check_group_positions, floor_to_multiple, round_to_nearest
+from toolbox import check_group_positions, round_to_nearest
 
 
 class Bomb(Tile):
@@ -136,7 +136,7 @@ class Bomb(Tile):
         )
 
         if explosions_hit:
-            self.timer = 0
+            self.explode()
 
     def collide_bomb_with_bomb(self):
         """Checks collision with other bombs"""
@@ -222,6 +222,10 @@ class Bomb(Tile):
         self.collision("vertical", self.obstacle_sprites)
         self.collision("vertical", self.destructive_wall_sprites)
 
+    def explode(self):
+        """Explodes the bomb setting the timer to 0."""
+        self.timer = 0
+
     def update(self):
         """Updates the bomb's timer."""
         self.explosion_collision()
@@ -231,16 +235,17 @@ class Bomb(Tile):
         if self.is_player_colliding_with_bomb():
             self.kick()
 
-        if self.timer > 0:
+        if self.timer > 0 and self.player.stats["wifi_explode"] is False:
             self.timer -= 1
         elif self.timer <= 0 and self.is_dead is False:
             self.is_dead = True
             self.kill()
             self.explode_path(
-                floor_to_multiple(self.rect.y, TILE_SIZE),
-                floor_to_multiple(self.rect.x, TILE_SIZE),
+                round_to_nearest(self.rect.y, TILE_SIZE),
+                round_to_nearest(self.rect.x, TILE_SIZE),
                 self.player.stats["bomb_range"],
             )
             self.player.current_bombs -= 1
+
         if self.speed > 0:
             self.move()

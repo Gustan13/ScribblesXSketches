@@ -49,7 +49,7 @@ class Player(pygame.sprite.Sprite):
 
         self.current_bombs = 0
 
-        self.wifi_timer = FPS / 4  # .25 second
+        self.wifi_timer = FPS / 4  # 1/4 of frame (15ms in 60fps)
 
     def explode_bomb_wifi(self):
         """Explodes the player's bombs."""
@@ -59,7 +59,7 @@ class Player(pygame.sprite.Sprite):
         if self.current_bombs == 0 or self.wifi_timer > 0:
             return
 
-        self.wifi_timer = FPS / 4  # reset to 1 second
+        self.wifi_timer = FPS / 4  # reset the timer
 
         self.bomb_sprites.sprites()[0].explode()  # make the first bomb explode
 

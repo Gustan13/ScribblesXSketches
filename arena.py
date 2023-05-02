@@ -40,12 +40,13 @@ class Arena:
                     Player(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.player_sprite],
-                        "marcos.png",
+                        "marcos1.png",
                         self.obstacle_sprites,
                         self.bomb_sprites,
                         self.powerup_sprites,
                         self.explosion_sprites,
                         self.destructive_wall_sprites,
+                        "marcos",
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),

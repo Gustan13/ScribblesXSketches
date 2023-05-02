@@ -5,6 +5,7 @@ from toolbox import floor_to_multiple
 from settings import FPS, HALF_TILE, TILE_SIZE, SPRITES_PATH, DEFAULT_POWERUP_STATS
 
 from bomb import Bomb
+from animation import Animation
 
 
 class Player(pygame.sprite.Sprite):
@@ -18,6 +19,7 @@ class Player(pygame.sprite.Sprite):
         powerup_sprites,
         explosion_sprites,
         destructive_wall_sprites,
+        name,
     ):
         super().__init__(groups)
 
@@ -50,6 +52,9 @@ class Player(pygame.sprite.Sprite):
         self.current_bombs = 0
 
         self.wifi_timer = FPS / 4  # 1/4 of frame (15ms in 60fps)
+
+        self.idle_animation = Animation(name, 2, 5, HALF_TILE)
+        self.walk_animation = Animation(name + "_walk_", 3, 5, HALF_TILE)
 
     def explode_bomb_wifi(self):
         """Explodes the player's bombs."""
@@ -130,6 +135,19 @@ class Player(pygame.sprite.Sprite):
 
     def move(self):
         """Moves the player."""
+
+        if self.direction.x == 1:
+            self.walk_animation.mirrored = False
+            self.walk_animation.play(self)
+        elif self.direction.x == -1:
+            self.walk_animation.mirrored = True
+            self.walk_animation.play(self)
+        elif self.direction.y == -1 or self.direction.y == 1:
+            self.walk_animation.play(self)
+        else:
+            self.idle_animation.mirrored = self.walk_animation.mirrored
+            self.idle_animation.play(self)
+
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
 

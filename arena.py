@@ -13,6 +13,11 @@ class Arena:
         self.display_surface = pygame.display.get_surface()
 
         self.visible_sprites = pygame.sprite.Group()
+
+        self.invisible_sprites = (
+            pygame.sprite.Group()
+        )  # invisible sprites are not drawn but still updated
+
         self.obstacle_sprites = pygame.sprite.Group()
         self.player_sprite = pygame.sprite.Group()
         self.bomb_sprites = pygame.sprite.Group()
@@ -26,17 +31,17 @@ class Arena:
         """Creates the map from the arrayMap in settings.py."""
         for idx_row, row in enumerate(arrayMap):
             for idx_col, tile in enumerate(row):
-                if tile == 1:
-                    Tile(
-                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
-                        [self.obstacle_sprites],
-                        "test.png",
-                    )
-                elif tile == 0:
+                if tile == 0:
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.visible_sprites],
                         "grass.png",
+                    )
+                elif tile == 1:
+                    Tile(
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
+                        [self.obstacle_sprites],
+                        "test.png",
                     )
                 elif tile == 2:
                     Marcos(
@@ -55,16 +60,9 @@ class Arena:
                         "grass.png",
                     )
                 elif tile == 3:
-                    # PowerUp(
-                    #     (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
-                    #     [self.powerup_sprites],
-                    #     # select random powerup
-                    #     choice(self.powerup_array),
-                    #     self.explosion_sprites,
-                    # )
                     DestructiveWall(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
-                        [self.destructive_wall_sprites, self.visible_sprites],
+                        [self.destructive_wall_sprites, self.invisible_sprites],
                         "destructive_wall.png",
                         self.explosion_sprites,
                         self.powerup_sprites,
@@ -121,6 +119,8 @@ class Arena:
         self.bomb_sprites.update()
         self.powerup_sprites.update()
         self.obstacle_sprites.update()
-        self.visible_sprites.update()
+
+        self.invisible_sprites.update()
+
         self.explosion_sprites.update()
         self.destructive_wall_sprites.update()

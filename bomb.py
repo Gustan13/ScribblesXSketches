@@ -36,7 +36,7 @@ class Bomb(Tile):
 
         self.is_bomb = True
 
-        self.speed = 2
+        self.speed = 0
         self.direction = pygame.math.Vector2(0, 0)
 
     def collision(self, direction, obstacles):
@@ -139,7 +139,7 @@ class Bomb(Tile):
             self.explode()
 
     def collide_bomb_with_bomb(self):
-        """Checks collision with other bombs"""
+        """Checks collision with other bombs for rebimbada"""
         pass
         # bombs_hit = pygame.sprite.spritecollide(
         #     self, self.bomb_sprite_group, False, pygame.sprite.collide_rect_ratio(1.00)
@@ -158,12 +158,12 @@ class Bomb(Tile):
         #         bomb.rect.y = round_to_nearest(bomb.rect.y, TILE_SIZE)
 
     def collide_with_player(self):
-        """Checks collision with player"""
+        """creates collision with player"""
         if self.can_collide_with_player:
             return
 
         player_hit = pygame.sprite.spritecollide(
-            self, self.player_group, False, pygame.sprite.collide_rect_ratio(1.2)
+            self, self.player_group, False, pygame.sprite.collide_rect_ratio(1.1)
         )
 
         if not player_hit:
@@ -171,15 +171,15 @@ class Bomb(Tile):
             self.can_collide_with_player = True
 
     def is_player_colliding_with_bomb(self):
-        """Checks if player is colliding with bomb"""
+        """Checks if player is colliding with bomb for kicking"""
         if not self.can_collide_with_player:
             return False
 
-        player_hit = pygame.sprite.spritecollide(
+        players_hit = pygame.sprite.spritecollide(
             self, self.player_group, False, pygame.sprite.collide_rect_ratio(1.2)
         )
 
-        return player_hit
+        return players_hit
 
     def calculate_edge_collision(self):
         """Calculates the edges of the bomb and player"""
@@ -205,19 +205,12 @@ class Bomb(Tile):
         if not player:
             return
 
-        if len(player) >= 2:
-            print("More than one player collided with bomb")
+        if len(player) >= 2:  # more than one player collided with bomb
             self.explode()
             return
 
-        # player = player[0]
-
         if self.player.stats["ronaldinho"] is False:
             return False
-
-        # if player has ronaldinho powerup, make the bomb move at the same direction as player
-
-        self.speed = 4
 
         left, top, right, bottom = self.calculate_edge_collision()
 
@@ -225,10 +218,12 @@ class Bomb(Tile):
             self.direction = pygame.math.Vector2(1, 0)
         elif right != -1:
             self.direction = pygame.math.Vector2(-1, 0)
-        if top != -1:
+        elif top != -1:
             self.direction = pygame.math.Vector2(0, 1)
         elif bottom != -1:
             self.direction = pygame.math.Vector2(0, -1)
+
+        self.speed = 4
 
     def move(self):
         """Moves the bomb."""
@@ -249,10 +244,10 @@ class Bomb(Tile):
         self.collide_with_player()
         self.collide_bomb_with_bomb()
 
-        s = self.is_player_colliding_with_bomb()
+        players_hit = self.is_player_colliding_with_bomb()
 
-        if s:
-            self.kick(s)
+        if players_hit:
+            self.kick(players_hit)
 
         if self.timer > 0 and self.player.stats["wifi_explode"] is False:
             self.timer -= 1

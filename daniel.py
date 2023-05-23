@@ -22,8 +22,8 @@ class Daniel(Player):
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_q]:
+        if keys[pygame.K_n]:
             self.spawn_bomb()
 
-        if keys[pygame.K_e]:
+        if keys[pygame.K_m]:
             self.explode_bomb_wifi()

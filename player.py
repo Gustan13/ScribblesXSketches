@@ -103,7 +103,9 @@ class Player(pygame.sprite.Sprite):
         for player in self.player_group[0]:
             if player == self:
                 continue
-            if (floor_to_multiple(player.rect.x, TILE_SIZE) == x_pos) and (floor_to_multiple(player.rect.y, TILE_SIZE) == y_pos):
+            if (floor_to_multiple(player.rect.x, TILE_SIZE) == x_pos) and (
+                floor_to_multiple(player.rect.y, TILE_SIZE) == y_pos
+            ):
                 return
         Bomb(
             (x_pos, y_pos),
@@ -121,27 +123,7 @@ class Player(pygame.sprite.Sprite):
 
     def input(self):
         """Handles player input."""
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_UP]:
-            self.direction.y = -1
-        elif keys[pygame.K_DOWN]:
-            self.direction.y = 1
-        else:
-            self.direction.y = 0
-
-        if keys[pygame.K_RIGHT]:
-            self.direction.x = 1
-        elif keys[pygame.K_LEFT]:
-            self.direction.x = -1
-        else:
-            self.direction.x = 0
-
-        if keys[pygame.K_z]:
-            self.spawn_bomb()
-
-        if keys[pygame.K_x]:
-            self.explode_bomb_wifi()
+        pass
 
     def move(self):
         """Moves the player."""

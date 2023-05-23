@@ -140,27 +140,31 @@ class Bomb(Tile):
 
     def collide_bomb_with_bomb(self):
         """Checks collision with other bombs"""
-        bombs_hit = pygame.sprite.spritecollide(
-            self, self.bomb_sprite_group, False, pygame.sprite.collide_rect_ratio(1.04)
-        )
+        pass
+        # bombs_hit = pygame.sprite.spritecollide(
+        #     self, self.bomb_sprite_group, False, pygame.sprite.collide_rect_ratio(1.00)
+        # )
 
-        for bomb in bombs_hit:
-            if bomb == self:
-                continue
+        # for bomb in bombs_hit:
+        #     if bomb == self:
+        #         continue
 
-            if bomb.speed > 0:
-                bomb.speed, self.speed = self.speed, bomb.speed
-                bomb.direction, self.direction = self.direction, bomb.direction
+        #     if bomb.speed > 0:
+        #         print("switch")
+        #         bomb.speed, self.speed = self.speed, bomb.speed
+        #         bomb.direction, self.direction = self.direction, bomb.direction
 
-                bomb.rect.x = round_to_nearest(bomb.rect.x, TILE_SIZE)
-                bomb.rect.y = round_to_nearest(bomb.rect.y, TILE_SIZE)
+        #         bomb.rect.x = round_to_nearest(bomb.rect.x, TILE_SIZE)
+        #         bomb.rect.y = round_to_nearest(bomb.rect.y, TILE_SIZE)
 
     def collide_with_player(self):
         """Checks collision with player"""
         if self.can_collide_with_player:
             return
 
-        player_hit = pygame.sprite.collide_rect_ratio(1.10)(self, self.player)
+        player_hit = pygame.sprite.spritecollide(
+            self, self.player_group, False, pygame.sprite.collide_rect_ratio(1.2)
+        )
 
         if not player_hit:
             self.obstacle_sprites.add(self)
@@ -171,7 +175,9 @@ class Bomb(Tile):
         if not self.can_collide_with_player:
             return False
 
-        player_hit = pygame.sprite.collide_rect_ratio(1.04)(self, self.player)
+        player_hit = pygame.sprite.spritecollide(
+            self, self.player_group, False, pygame.sprite.collide_rect_ratio(1.2)
+        )
 
         return player_hit
 
@@ -187,16 +193,27 @@ class Bomb(Tile):
         bottom_edge = pygame.Rect(*self.rect.bottomleft, TILE_SIZE, 1)
 
         return (
-            left_edge.colliderect(self.player.rect),
-            top_edge.colliderect(self.player.rect),
-            right_edge.colliderect(self.player.rect),
-            bottom_edge.colliderect(self.player.rect),
+            # add the two player rects to the tuple
+            left_edge.collidelist(self.player_group.sprites()),
+            top_edge.collidelist(self.player_group.sprites()),
+            right_edge.collidelist(self.player_group.sprites()),
+            bottom_edge.collidelist(self.player_group.sprites()),
         )
 
-    def kick(self):
+    def kick(self, player):
         """Kicks the bomb in the direction the player is facing"""
-        if not self.player.stats["ronaldinho"]:
+        if not player:
             return
+
+        if len(player) >= 2:
+            print("More than one player collided with bomb")
+            self.explode()
+            return
+
+        # player = player[0]
+
+        if self.player.stats["ronaldinho"] is False:
+            return False
 
         # if player has ronaldinho powerup, make the bomb move at the same direction as player
 
@@ -204,13 +221,13 @@ class Bomb(Tile):
 
         left, top, right, bottom = self.calculate_edge_collision()
 
-        if self.player.direction.x > 0 and left:
+        if left != -1:
             self.direction = pygame.math.Vector2(1, 0)
-        elif self.player.direction.x < 0 and right:
+        elif right != -1:
             self.direction = pygame.math.Vector2(-1, 0)
-        elif self.player.direction.y > 0 and top:
+        if top != -1:
             self.direction = pygame.math.Vector2(0, 1)
-        elif self.player.direction.y < 0 and bottom:
+        elif bottom != -1:
             self.direction = pygame.math.Vector2(0, -1)
 
     def move(self):
@@ -232,8 +249,10 @@ class Bomb(Tile):
         self.collide_with_player()
         self.collide_bomb_with_bomb()
 
-        if self.is_player_colliding_with_bomb():
-            self.kick()
+        s = self.is_player_colliding_with_bomb()
+
+        if s:
+            self.kick(s)
 
         if self.timer > 0 and self.player.stats["wifi_explode"] is False:
             self.timer -= 1

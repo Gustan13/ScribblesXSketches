@@ -66,7 +66,11 @@ class Player(pygame.sprite.Sprite):
 
         self.wifi_timer = FPS / 4  # reset the timer
 
-        self.bomb_sprites.sprites()[0].explode()  # make the first bomb explode
+        # get bombs from the player
+        for bomb in self.bomb_sprites:
+            if bomb.player == self:
+                bomb.explode()
+                break
 
     def update_wifi_timer(self):
         """Updates the wifi timer."""
@@ -95,6 +99,12 @@ class Player(pygame.sprite.Sprite):
             if (bomb.rect.x == x_pos) and (bomb.rect.y == y_pos):
                 return
 
+        # if already a player in the position, don't spawn a bomb
+        for player in self.player_group[0]:
+            if player == self:
+                continue
+            if (floor_to_multiple(player.rect.x, TILE_SIZE) == x_pos) and (floor_to_multiple(player.rect.y, TILE_SIZE) == y_pos):
+                return
         Bomb(
             (x_pos, y_pos),
             [self.bomb_sprites],

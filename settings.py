@@ -14,8 +14,8 @@ DEFAULT_POWERUP_STATS = {  # Default stats
     "max_bombs": 4,
     "speed": TILE_SIZE // 16,
     "bomb_range": 2,
-    "ronaldinho": False,  # Ronaldinho mode true para teste
-    "wifi_explode": False,
+    "ronaldinho": True,  # Ronaldinho mode true para teste
+    "wifi_explode": True,
 }
 
 POWERUPS_ARRAY = list(
@@ -35,7 +35,7 @@ arrayMap = [
     [1, 0, 1, 3, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1],
     [1, 0, 0, 0, 0, 3, 1, 0, 1, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1],
     [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 3, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],

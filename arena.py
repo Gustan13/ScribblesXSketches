@@ -92,13 +92,13 @@ class Arena:
                     Daniel(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.player_sprite],
-                        "marcos1.png",
+                        "daniel1.png",
                         self.obstacle_sprites,
                         self.bomb_sprites,
                         self.powerup_sprites,
                         self.explosion_sprites,
                         self.destructive_wall_sprites,
-                        "marcos",
+                        "daniel",
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),

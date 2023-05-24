@@ -38,6 +38,7 @@ class DestructiveWall(Tile):
 
     def destroy(self):
         """Destroys the wall and spawns a powerup."""
+        # make this powerup spawn randomly (sometimes) based on some proportion (ronaldinho and wifi should be less common).
         PowerUp(
             (self.rect.x, self.rect.y),
             [self.powerup_sprites],

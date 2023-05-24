@@ -142,7 +142,7 @@ class Bomb(Tile):
         """Checks collision with other bombs for rebimbada"""
         pass
         # bombs_hit = pygame.sprite.spritecollide(
-        #     self, self.bomb_sprite_group, False, pygame.sprite.collide_rect_ratio(1.00)
+        #     self, self.bomb_sprite_group, False, pygame.sprite.collide_rect_ratio(1.1)
         # )
 
         # for bomb in bombs_hit:
@@ -150,8 +150,7 @@ class Bomb(Tile):
         #         continue
 
         #     if bomb.speed > 0:
-        #         print("switch")
-        #         bomb.speed, self.speed = self.speed, bomb.speed
+        #         bomb.speed, self.speed = 0, bomb.speed
         #         bomb.direction, self.direction = self.direction, bomb.direction
 
         #         bomb.rect.x = round_to_nearest(bomb.rect.x, TILE_SIZE)

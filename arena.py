@@ -5,6 +5,16 @@ from tile import Tile
 from marcos import Marcos
 from daniel import Daniel
 from destructive_wall import DestructiveWall
+from enum import Enum
+
+
+class Tiles(Enum):
+    GRASS = 0
+    WALL = 1
+    WALL2 = 2
+    DESTRUCTIVE_WALL = 3
+    MARCOS = 4
+    DANIEL = 5
 
 
 class Arena:
@@ -18,6 +28,7 @@ class Arena:
         self.powerup_sprites = pygame.sprite.Group()
         self.explosion_sprites = pygame.sprite.Group()
         self.destructive_wall_sprites = pygame.sprite.Group()
+        self.invisible_sprites = pygame.sprite.Group()
 
         self.create_map()
 
@@ -25,19 +36,42 @@ class Arena:
         """Creates the map from the arrayMap in settings.py."""
         for idx_row, row in enumerate(arrayMap):
             for idx_col, tile in enumerate(row):
-                if tile == 1:
-                    Tile(
-                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
-                        [self.obstacle_sprites],
-                        "test.png",
-                    )
-                elif tile == 0:
+                if tile == Tiles.GRASS.value:
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.visible_sprites],
                         "grass.png",
                     )
-                elif tile == 2:
+
+                elif tile == Tiles.WALL.value:
+                    Tile(
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
+                        [self.obstacle_sprites],
+                        "wall.png",
+                    )
+
+                elif tile == Tiles.WALL2.value:
+                    Tile(
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
+                        [self.obstacle_sprites],
+                        "wall2.png",
+                    )
+
+                elif tile == Tiles.DESTRUCTIVE_WALL.value:
+                    DestructiveWall(
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
+                        [self.destructive_wall_sprites, self.invisible_sprites],
+                        "destructive_wall.png",
+                        self.explosion_sprites,
+                        self.powerup_sprites,
+                    )
+                    Tile(
+                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
+                        [self.visible_sprites],
+                        "grass.png",
+                    )
+
+                elif tile == Tiles.MARCOS.value:
                     Marcos(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.player_sprite],
@@ -54,7 +88,7 @@ class Arena:
                         [self.visible_sprites],
                         "grass.png",
                     )
-                elif tile == 4:
+                elif tile == Tiles.DANIEL.value:
                     Daniel(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.player_sprite],
@@ -65,26 +99,6 @@ class Arena:
                         self.explosion_sprites,
                         self.destructive_wall_sprites,
                         "marcos",
-                    )
-                    Tile(
-                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
-                        [self.visible_sprites],
-                        "grass.png",
-                    )
-                elif tile == 3:
-                    # PowerUp(
-                    #     (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
-                    #     [self.powerup_sprites],
-                    #     # select random powerup
-                    #     choice(self.powerup_array),
-                    #     self.explosion_sprites,
-                    # )
-                    DestructiveWall(
-                        (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
-                        [self.destructive_wall_sprites, self.visible_sprites],
-                        "destructive_wall.png",
-                        self.explosion_sprites,
-                        self.powerup_sprites,
                     )
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
@@ -110,6 +124,6 @@ class Arena:
         self.bomb_sprites.update()
         self.powerup_sprites.update()
         self.obstacle_sprites.update()
-        self.visible_sprites.update()
+        self.invisible_sprites.update()
         self.explosion_sprites.update()
         self.destructive_wall_sprites.update()

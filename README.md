@@ -25,16 +25,15 @@ A bomberman clone.
   - [x] Add kick power up
   - [x] Add wifi power up
 
-- [ ] Add local multiplayer
+- [x] Add local multiplayer
 
 - [ ] Add sprites
 
   - [ ] Add player sprites
     - [ ] Add player 1 sprite
     - [ ] Add player 2 sprite
-  - [ ] Add enemy sprites
   - [ ] Add power up sprites
-  - [ ] Add tile sprites
+  - [x] Add tile sprites
 
 - [ ] Add levels
 

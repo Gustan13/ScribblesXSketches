@@ -25,7 +25,7 @@ class Animation:
     def initialize_animation(self):
         for i in range(self.frame_amount):
             frame = pygame.image.load(
-                pathlib.Path(SPRITES_PATH, self.name + str(i + 1) + ".png")
+                pathlib.Path(SPRITES_PATH, f"{self.name}{(i + 1)}.png")
             )
             frame = pygame.transform.scale(frame, (self.scale, self.scale))
             mirrored_frame = pygame.transform.flip(frame, -1, 0)

@@ -2,7 +2,13 @@ import pathlib
 import pygame
 
 from toolbox import floor_to_multiple
-from settings import FPS, HALF_TILE, TILE_SIZE, SPRITES_PATH, DEFAULT_POWERUP_STATS
+from settings import (
+    FPS,
+    HALF_TILE,
+    SPRITES_PATH,
+    TILE_SIZE,
+    DEFAULT_POWERUP_STATS,
+)
 
 from bomb import Bomb
 from animation import Animation
@@ -123,7 +129,7 @@ class Player(pygame.sprite.Sprite):
 
     def input(self):
         """Handles player input."""
-        pass
+        raise NotImplementedError("You need to implement this method.")
 
     def move(self):
         """Moves the player."""

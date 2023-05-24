@@ -1,11 +1,10 @@
 import pygame
-
 from tile import Tile
 
 
 class PowerUp(Tile):
     def __init__(self, pos, groups, powerup_type, explosion_sprites):
-        super().__init__(pos, groups, f"{powerup_type}.png")
+        super().__init__(pos, groups, f"powerups/{powerup_type}.png")
         self.powerup_type = powerup_type
         self.explosion_sprites = explosion_sprites
 

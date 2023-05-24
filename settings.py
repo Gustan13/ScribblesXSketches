@@ -1,6 +1,8 @@
 FPS = 60
 
+TILES_PATH = "sprites/tiles"
 SPRITES_PATH = "sprites"
+FONT_PATH = "fonts"
 
 TILE_SIZE = 64
 HALF_TILE = TILE_SIZE / 2

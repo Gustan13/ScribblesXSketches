@@ -1,6 +1,6 @@
 import pygame
 
-from settings import TILE_SIZE, arrayMap
+from settings import TILE_SIZE, map_2
 from tile import Tile
 from marcos import Marcos
 from daniel import Daniel
@@ -34,7 +34,7 @@ class Arena:
 
     def create_map(self):
         """Creates the map from the arrayMap in settings.py."""
-        for idx_row, row in enumerate(arrayMap):
+        for idx_row, row in enumerate(map_2):
             for idx_col, tile in enumerate(row):
                 if tile == Tiles.GRASS.value:
                     Tile(

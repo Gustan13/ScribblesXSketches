@@ -68,6 +68,7 @@ class Player(pygame.sprite.Sprite):
             "explosion": pygame.mixer.Sound(
                 pathlib.Path("sounds", "Bomb Explodes.wav")
             ),
+            "place_bomb": pygame.mixer.Sound(pathlib.Path("sounds", "Place Bomb.wav")),
         }
 
     def explode_bomb_wifi(self):
@@ -121,6 +122,8 @@ class Player(pygame.sprite.Sprite):
                 floor_to_multiple(player.rect.y, TILE_SIZE) == y_pos
             ):
                 return
+
+        self.sounds["place_bomb"].play()
         Bomb(
             (x_pos, y_pos),
             [self.bomb_sprites],

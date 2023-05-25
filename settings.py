@@ -43,5 +43,9 @@ arrayMap = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ]
 
-# 0 - rgb(255,255,255)
-# 1 - rgb(0,0,0)
+# 0 - grass
+# 1 - wall with shadow
+# 2 - wall without shadow
+# 3 - box with powerup
+# 4 - Marcos
+# 5 - Daniel

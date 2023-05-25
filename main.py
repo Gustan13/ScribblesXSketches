@@ -9,12 +9,12 @@ from mainmenu import MainMenu
 class Game:
     def __init__(self) -> None:
         pg.init()
-        pg.display.set_caption("Scribbles X Sketches")
+        pg.display.set_caption("Scribbles vs. Sketches")
 
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         self.clock = pg.time.Clock()
 
-        mainmenu = MainMenu(self.screen)
+        mainmenu = MainMenu(self.screen, self.clock)
 
         mainmenu.draw()
         mainmenu.play()

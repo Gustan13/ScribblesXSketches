@@ -8,6 +8,8 @@ class PowerUp(Tile):
         self.powerup_type = powerup_type
         self.explosion_sprites = explosion_sprites
 
+        self.sound = pygame.mixer.Sound("sounds/Item Get.wav")
+
     def speed_up(self, stats):
         """Increases the player's speed by 1."""
         stats["speed"] += 1
@@ -32,6 +34,8 @@ class PowerUp(Tile):
 
     def apply(self, stats):
         """Applies the powerup to the player."""
+
+        self.play_sound()
         if self.powerup_type == "speed":
             self.speed_up(stats)
         elif self.powerup_type == "max_bombs":
@@ -51,6 +55,10 @@ class PowerUp(Tile):
 
         if explosions_hit:
             self.kill()
+
+    def play_sound(self):
+        """Plays the powerup sound."""
+        self.sound.play()
 
     def update(self):
         """Checks for collision with explosions every frame."""

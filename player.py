@@ -62,6 +62,14 @@ class Player(pygame.sprite.Sprite):
         self.idle_animation = Animation(name, 2, 5, HALF_TILE)
         self.walk_animation = Animation(name + "_walk_", 3, 5, HALF_TILE)
 
+        self.sounds = {
+            "kick": pygame.mixer.Sound(pathlib.Path("sounds", "Kick.wav")),
+            "dies": pygame.mixer.Sound(pathlib.Path("sounds", "Dies.wav")),
+            "explosion": pygame.mixer.Sound(
+                pathlib.Path("sounds", "Bomb Explodes.wav")
+            ),
+        }
+
     def explode_bomb_wifi(self):
         """Explodes the player's bombs."""
         if self.stats["wifi_explode"] is False:
@@ -190,8 +198,11 @@ class Player(pygame.sprite.Sprite):
             self, self.explosion_sprites, False
         )
 
-        if explosions_hit:
+        if explosions_hit:  # if the player is hit by an explosion
             self.rect.topleft = self.respawn_point
+
+            # play death sound
+            self.sounds["dies"].play()
 
     def update(self):
         """Main player loop that runs every frame."""

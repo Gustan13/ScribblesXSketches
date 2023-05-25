@@ -46,7 +46,7 @@ class Bomb(Tile):
             for sprite in objects_hit:
                 if sprite == self:
                     continue
-
+                self.speed = 0
                 if self.direction.y > 0:  # BAIXO
                     self.rect.bottom = sprite.rect.top
                 elif self.direction.y < 0:  # CIMA
@@ -57,7 +57,7 @@ class Bomb(Tile):
             for sprite in objects_hit:
                 if sprite == self:
                     continue
-
+                self.speed = 0
                 if self.direction.x > 0:  # DIREITA
                     self.rect.right = sprite.rect.left
                 elif self.direction.x < 0:  # ESQUERDA
@@ -211,6 +211,8 @@ class Bomb(Tile):
         if self.player.stats["ronaldinho"] is False:
             return False
 
+        # play sound
+
         left, top, right, bottom = self.calculate_edge_collision()
 
         if left != -1:
@@ -221,6 +223,11 @@ class Bomb(Tile):
             self.direction = pygame.math.Vector2(0, 1)
         elif bottom != -1:
             self.direction = pygame.math.Vector2(0, -1)
+
+        # if kicked
+        if left != -1 or right != -1 or top != -1 or bottom != -1:
+            if self.speed > 0:  # and moved
+                self.player.sounds["kick"].play()  # play sound
 
         self.speed = 4
 
@@ -253,6 +260,8 @@ class Bomb(Tile):
         elif self.timer <= 0 and self.is_dead is False:
             self.is_dead = True
             self.kill()
+            # play sound
+            self.player.sounds["explosion"].play()
             self.explode_path(
                 round_to_nearest(self.rect.y, TILE_SIZE),
                 round_to_nearest(self.rect.x, TILE_SIZE),

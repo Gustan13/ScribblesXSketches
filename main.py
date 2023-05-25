@@ -3,6 +3,7 @@ import pygame as pg
 
 from settings import FPS, HEIGHT, WIDTH
 from arena import Arena
+from mainmenu import MainMenu
 
 
 class Game:
@@ -12,6 +13,11 @@ class Game:
 
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         self.clock = pg.time.Clock()
+
+        mainmenu = MainMenu(self.screen)
+
+        mainmenu.draw()
+        mainmenu.play()
 
         self.arena = Arena()
 

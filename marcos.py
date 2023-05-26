@@ -22,8 +22,8 @@ class Marcos(Player):
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_KP_1]:
+        if keys[pygame.K_KP_2]:
             self.spawn_bomb()
 
-        if keys[pygame.K_KP_2]:
+        if keys[pygame.K_KP_3]:
             self.explode_bomb_wifi()

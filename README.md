@@ -42,7 +42,7 @@ A bomberman clone.
   - [ ] Add level 3
 
 - [ ] Add menu
-  - [ ] Add main menu
+  - [x] Add main menu
   - [ ] Add pause menu
   - [ ] Add game over menu
   - [ ] Add level select menu

@@ -1,13 +1,20 @@
+import math
 import pygame
-from settings import WIDTH, HEIGHT, FPS, TILE_SIZE
+from settings import WIDTH, HEIGHT, TILE_SIZE
 
 pygame.font.init()
 
 font = pygame.font.Font("./font/Minecraft.ttf", 36)
+big_font = pygame.font.Font("./font/Minecraft.ttf", 60)
 
 
 def calculate_centered_position(text: str, x: int, y: int):
     text_width, text_height = font.size(text)
+    return (x - text_width // 2, y - text_height // 2)
+
+
+def calculate_centered_position_big(text: str, x: int, y: int):
+    text_width, text_height = big_font.size(text)
     return (x - text_width // 2, y - text_height // 2)
 
 
@@ -18,8 +25,8 @@ class MainMenu:
         self.is_start_game_selected = True
 
         self.sounds = {
-            "move": pygame.mixer.Sound("./sounds/Select.wav"),
-            "select": pygame.mixer.Sound("./sounds/Pause.wav"),
+            "move": pygame.mixer.Sound("./sounds/move cursor.mp3"),
+            "select": pygame.mixer.Sound("./sounds/Select.wav"),
         }
 
         self.controls_image = pygame.image.load("images/controls.png")
@@ -27,42 +34,78 @@ class MainMenu:
             self.controls_image, (WIDTH, HEIGHT)
         )
 
+        self.title_opacity = 0
+        self.foreground_image = pygame.image.load("images/textinho.png")
+        self.foreground_image = pygame.transform.scale(
+            self.foreground_image, (WIDTH, HEIGHT)
+        )
         self.show_controls = False
-        clock.tick(5)
+        self.background_image = pygame.image.load("images/background.png")
+        self.background_image = pygame.transform.scale(
+            self.background_image, (WIDTH, HEIGHT)
+        )
+        clock.tick(10)  # 10 FPS
 
     def draw(self):
-        text_1 = "Scribbles vs. Sketches"
-        text_2 = "Start Game"
-        text_3 = "Controls"
+        text_3 = "Scribbles vs. Sketches"
+        text_1 = "Start Game"
+        text_2 = "Controls"
         # make the background an image
-        background_image = pygame.image.load("images/background.png")
-        background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
-        self.screen.blit(background_image, (0, 0))
+        if self.title_opacity < 255:
+            self.title_opacity += 3
+
+        self.screen.blit(self.background_image, (0, 0))
+
+        self.foreground_image.set_alpha(min(255, self.title_opacity * 3))
+        self.screen.blit(self.foreground_image, (0, 0))
+
+        self.screen.blit(
+            self.foreground_image,
+            (0, 0),
+        )
+
+        big_font_surface = big_font.render(text_3, True, "black")
+        big_font_surface.set_alpha(min(255, self.title_opacity * 3))
+        self.screen.blit(
+            big_font_surface,
+            calculate_centered_position_big(text_3, WIDTH // 2, 128),
+        )
 
         if self.is_start_game_selected:
+            font_surf = font.render(f"> {text_1}", True, "white")
+            font_surf.set_alpha(self.title_opacity)
             self.screen.blit(
-                font.render(f"> {text_2}", True, "white"),
+                font_surf,
                 calculate_centered_position(
-                    text_2, WIDTH // 2, HEIGHT // 2 - TILE_SIZE
+                    text_1, WIDTH // 2, HEIGHT // 2 - TILE_SIZE
                 ),
             )
+
+            font_surf = font.render(text_2, True, "white")
+            font_surf.set_alpha(self.title_opacity)
+
             self.screen.blit(
-                font.render(text_3, True, "white"),
+                font_surf,
                 calculate_centered_position(
-                    text_3, WIDTH // 2, HEIGHT // 2 + TILE_SIZE
+                    text_2, WIDTH // 2, HEIGHT // 2 + TILE_SIZE
                 ),
             )
         else:
+            font_surf = font.render(text_1, True, "white")
+            font_surf.set_alpha(self.title_opacity)
             self.screen.blit(
-                font.render(text_2, True, "white"),
+                font_surf,
                 calculate_centered_position(
-                    text_2, WIDTH // 2, HEIGHT // 2 - TILE_SIZE
+                    text_1, WIDTH // 2, HEIGHT // 2 - TILE_SIZE
                 ),
             )
+
+            font_surf = font.render(f"> {text_2}", True, "white")
+            font_surf.set_alpha(self.title_opacity)
             self.screen.blit(
-                font.render(f"> {text_3}", True, "white"),
+                font_surf,
                 calculate_centered_position(
-                    text_3, WIDTH // 2, HEIGHT // 2 + TILE_SIZE
+                    text_2, WIDTH // 2, HEIGHT // 2 + TILE_SIZE
                 ),
             )
 
@@ -79,12 +122,12 @@ class MainMenu:
         )
 
         self.screen.blit(
-            font.render(text_2, True, "white"),
+            font.render(text_2, True, (255, 60, 48)),
             calculate_centered_position(text_2, WIDTH // 2, HEIGHT // 5 - 30),
         )
 
         self.screen.blit(
-            font.render(text_3, True, "white"),
+            font.render(text_3, True, (0, 187, 220)),
             calculate_centered_position(text_3, WIDTH // 2, HEIGHT // 1.5),
         )
 

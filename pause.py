@@ -46,6 +46,11 @@ class Pause:
 
         self.selected_state = 0
 
+        self.sounds = {
+            "move": pygame.mixer.Sound("./sounds/move cursor.mp3"),
+            "select": pygame.mixer.Sound("./sounds/Select.wav"),
+        }
+
     def draw(self):
         """Draws the pause menu"""
         self.screen.blit(self.background, self.background_rect)
@@ -71,7 +76,9 @@ class Pause:
                     self.move_cursor_up()
                 elif event.key == pygame.K_DOWN:
                     self.move_cursor_down()
+
                 elif event.key == pygame.K_RETURN:
+                    self.sounds["select"].play()
                     if self.selected_state == 0:
                         return "resume"
                     elif self.selected_state == 1:
@@ -86,11 +93,13 @@ class Pause:
     def move_cursor_up(self):
         """Moves the cursor up one state"""
         self.selected_state -= 1
+        self.sounds["move"].play()
         if self.selected_state < 0:
             self.selected_state = 2
 
     def move_cursor_down(self):
         """Moves the cursor down one state"""
         self.selected_state += 1
+        self.sounds["move"].play()
         if self.selected_state > 2:
             self.selected_state = 0

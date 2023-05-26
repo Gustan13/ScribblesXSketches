@@ -118,6 +118,11 @@ class cutscene1(Cutscene):
         self.createActor("images/background.png", 0, 0, WIDTH, HEIGHT)
         self.carnak = self.createActor("sprites/carnak.png", WIDTH, 258, 128, 128)
         self.marcos = self.createActor("sprites/marcos1.png", WIDTH // 5, 715, 128, 128)
+
+        img_with_flip = pygame.transform.flip(self.marcos.image, True, False)
+
+        self.marcos.image = img_with_flip
+
         self.daniel = self.createActor(
             "sprites/daniel1.png", 4 * WIDTH // 5, 715, 128, 128
         )

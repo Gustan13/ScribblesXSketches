@@ -30,8 +30,8 @@ class Animation:
             frame = pygame.transform.scale(frame, (self.scale, self.scale))
             mirrored_frame = pygame.transform.flip(frame, -1, 0)
 
-            self.frames.append(frame)
-            self.mirrored_frames.append(mirrored_frame)
+            self.mirrored_frames.append(frame)
+            self.frames.append(mirrored_frame)
 
     def speed_up(self):
         self.fps += 1

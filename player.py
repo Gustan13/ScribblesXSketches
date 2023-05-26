@@ -59,8 +59,8 @@ class Player(pygame.sprite.Sprite):
 
         self.wifi_timer = FPS / 4  # 1/4 of frame (15ms in 60fps)
 
-        self.idle_animation = Animation(name, 2, 5, HALF_TILE)
-        self.walk_animation = Animation(name + "_walk_", 3, 5, HALF_TILE)
+        self.idle_animation = Animation(name, 2, 13, HALF_TILE)
+        self.walk_animation = Animation(name + "_walk_", 7, 13, HALF_TILE)
 
         self.sounds = {
             "kick": pygame.mixer.Sound(pathlib.Path("sounds", "Kick.wav")),

@@ -140,7 +140,6 @@ class Bomb(Tile):
 
     def collide_bomb_with_bomb(self):
         """Checks collision with other bombs for rebimbada"""
-        pass
         # bombs_hit = pygame.sprite.spritecollide(
         #     self, self.bomb_sprite_group, False, pygame.sprite.collide_rect_ratio(1.1)
         # )

@@ -27,12 +27,12 @@ A bomberman clone.
 
 - [x] Add local multiplayer
 
-- [ ] Add sprites
+- [x] Add sprites
 
-  - [ ] Add player sprites
-    - [ ] Add player 1 sprite
-    - [ ] Add player 2 sprite
-  - [ ] Add power up sprites
+  - [x] Add player sprites
+    - [x] Add player 1 sprite
+    - [x] Add player 2 sprite
+  - [x] Add power up sprites
   - [x] Add tile sprites
 
 - [ ] Add levels
@@ -43,10 +43,10 @@ A bomberman clone.
 
 - [ ] Add menu
   - [x] Add main menu
-  - [ ] Add pause menu
+  - [x] Add pause menu
   - [ ] Add game over menu
   - [ ] Add level select menu
-  - [ ] Add settings menu
+  - [ ] Add options menu
   - [ ] Add credits menu
 
 ## Known bugs

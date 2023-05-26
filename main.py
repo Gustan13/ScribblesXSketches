@@ -6,6 +6,8 @@ from settings import FPS, HEIGHT, WIDTH
 from arena import Arena
 from mainmenu import MainMenu
 
+from cutscene import cutscene1, cutscene2, cutscene3
+
 
 class Game:
     def __init__(self) -> None:
@@ -19,6 +21,14 @@ class Game:
 
         self.mainmenu.draw()
         self.mainmenu.play()
+
+        self.cutscene1 = cutscene1()
+        self.cutscene2 = cutscene2()
+        self.cutscene3 = cutscene3()
+
+        self.cutscene1.play()
+        self.cutscene2.play()
+        self.cutscene3.play()
 
         self.arena = Arena()
         self.is_paused = False
@@ -37,6 +47,7 @@ class Game:
             self.is_paused = False
         elif res == "main_menu":
             self.mainmenu = MainMenu(self.screen, self.clock)
+            self.arena = Arena()
             self.is_paused = False
             self.mainmenu.draw()
             self.mainmenu.play()

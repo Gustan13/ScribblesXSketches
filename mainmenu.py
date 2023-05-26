@@ -9,11 +9,13 @@ big_font = pygame.font.Font("./font/Minecraft.ttf", 60)
 
 
 def calculate_centered_position(text: str, x: int, y: int):
+    """Calculates the centered position of a text"""
     text_width, text_height = font.size(text)
     return (x - text_width // 2, y - text_height // 2)
 
 
 def calculate_centered_position_big(text: str, x: int, y: int):
+    """Calculates the centered position of a text in big font"""
     text_width, text_height = big_font.size(text)
     return (x - text_width // 2, y - text_height // 2)
 
@@ -47,16 +49,17 @@ class MainMenu:
         clock.tick(10)  # 10 FPS
 
     def draw(self):
+        """Draws the main menu"""
         text_3 = "Scribbles vs. Sketches"
         text_1 = "Start Game"
         text_2 = "Controls"
         # make the background an image
         if self.title_opacity < 255:
-            self.title_opacity += 3
+            self.title_opacity += 2
 
         self.screen.blit(self.background_image, (0, 0))
 
-        self.foreground_image.set_alpha(min(255, self.title_opacity * 3))
+        self.foreground_image.set_alpha(min(255, self.title_opacity * 2))
         self.screen.blit(self.foreground_image, (0, 0))
 
         self.screen.blit(
@@ -65,7 +68,7 @@ class MainMenu:
         )
 
         big_font_surface = big_font.render(text_3, True, "black")
-        big_font_surface.set_alpha(min(255, self.title_opacity * 3))
+        big_font_surface.set_alpha(min(255, self.title_opacity * 2))
         self.screen.blit(
             big_font_surface,
             calculate_centered_position_big(text_3, WIDTH // 2, 128),
@@ -110,6 +113,7 @@ class MainMenu:
             )
 
     def draw_controls(self):
+        """Draws the controls screen"""
         self.screen.blit(self.controls_image, (0, 0))
 
         text_1 = "Press Esc to go back"

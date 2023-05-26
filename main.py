@@ -1,5 +1,6 @@
 import sys
 import pygame as pg
+from pause import Pause
 
 from settings import FPS, HEIGHT, WIDTH
 from arena import Arena
@@ -14,12 +15,34 @@ class Game:
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         self.clock = pg.time.Clock()
 
-        mainmenu = MainMenu(self.screen, self.clock)
+        self.mainmenu = MainMenu(self.screen, self.clock)
 
-        mainmenu.draw()
-        mainmenu.play()
+        self.mainmenu.draw()
+        self.mainmenu.play()
 
         self.arena = Arena()
+        self.is_paused = False
+        self.pause_menu = Pause(self.screen)
+
+    def draw_pause(self):
+        """Pause the game."""
+        self.pause_menu.draw()
+
+        res = self.pause_menu.update()
+
+        if res == "quit":
+            pg.quit()
+            sys.exit()
+        elif res == "resume":
+            self.is_paused = False
+        elif res == "main_menu":
+            self.mainmenu = MainMenu(self.screen, self.clock)
+            self.is_paused = False
+            self.mainmenu.draw()
+            self.mainmenu.play()
+
+        elif res == "options":
+            print("options")  # TODO: Make this a trolling
 
     def run(self):
         """Main game loop."""
@@ -28,10 +51,18 @@ class Game:
                 if event.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE or event.key == pg.K_p:
+                        self.is_paused = not self.is_paused
+
+            pg.display.update()
+
+            if self.is_paused:
+                self.draw_pause()
+                continue
 
             self.screen.fill("black")
             self.arena.run()
-            pg.display.update()
             self.clock.tick(FPS)
 
 

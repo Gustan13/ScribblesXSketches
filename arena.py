@@ -1,3 +1,4 @@
+import random
 import pygame
 
 from settings import TILE_SIZE, map_2
@@ -36,11 +37,13 @@ class Arena:
         """Creates the map from the arrayMap in settings.py."""
         for idx_row, row in enumerate(map_2):
             for idx_col, tile in enumerate(row):
+                random_grass = random.choice(["grass.png", "grass1.png"])
+
                 if tile == Tiles.GRASS.value:
                     Tile(
                         (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                         [self.visible_sprites],
-                        "grass.png",
+                        random_grass,
                     )
 
                 elif tile == Tiles.WALL.value:

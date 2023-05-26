@@ -207,9 +207,6 @@ class Bomb(Tile):
             self.explode()
             return
 
-        if self.player.stats["ronaldinho"] is False:
-            return False
-
         # play sound
 
         left, top, right, bottom = self.calculate_edge_collision()
@@ -228,7 +225,10 @@ class Bomb(Tile):
             if self.speed > 0:  # and moved
                 self.player.sounds["kick"].play()  # play sound
 
-        self.speed = 4
+        if player[0].stats["ronaldinho"] is False:
+            self.speed = 0
+        else:
+            self.speed = 4
 
     def move(self):
         """Moves the bomb."""

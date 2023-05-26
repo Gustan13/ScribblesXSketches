@@ -143,11 +143,15 @@ class MainMenu:
                     quit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        self.sounds["select"].play()
+                        if not self.show_controls:
+                            self.sounds["select"].play()
                         if self.is_start_game_selected:
                             self.is_running = False
                         else:
                             self.show_controls = True
+                    if event.key == pygame.K_ESCAPE:
+                        self.sounds["select"].play()
+                        self.show_controls = False
                     if event.key == pygame.K_UP:
                         if not self.is_start_game_selected:
                             self.sounds["move"].play()

@@ -128,7 +128,7 @@ class cutscene1(Cutscene):
         self.createText("Press enter to skip...", WIDTH - 200, HEIGHT - 50, "white")
 
     def update(self):
-        if not self.move_to(self.carnak.rect, WIDTH // 2, self.carnak.rect.y, 5):
+        if not self.move_to(self.carnak.rect, WIDTH // 2 - 56, self.carnak.rect.y, 5):
             return
 
         self.createText(
@@ -199,11 +199,12 @@ class cutscene3(Cutscene):
     def __init__(self):
         super().__init__()
         self.createActor("images/background.png", 0, 0, WIDTH, HEIGHT)
-        self.createActor("sprites/carnak.png", WIDTH, 258, 128, 128)
-        self.timer = FPS * 3.5
+
         self.createText(
             "Now, only the best illustrator will survive...", WIDTH // 2, 50, "white"
         )
+
+        self.createActor("sprites/carnak.png", WIDTH // 2 - 56, 258, 128, 128)
 
         self.createText("Press enter to skip...", WIDTH - 200, HEIGHT - 50, "white")
 

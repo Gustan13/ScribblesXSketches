@@ -47,22 +47,22 @@ class Arena:
         self.max_points = max_score
 
     def update_hud(self):
-        marcos_text = font.render("Marcos", True, "black")
-        daniel_text = font.render("Daniel", True, "black")
+        marcos_text = font.render("Marcos", True, "white")
+        daniel_text = font.render("Daniel", True, "white")
 
         self.display_surface.blit(
             marcos_text,
-            (5, HEIGHT - (TILE_SIZE - 10)),
+            (5, HEIGHT - (TILE_SIZE - 20)),
         )
         self.display_surface.blit(
             daniel_text,
-            (WIDTH/2, HEIGHT - (TILE_SIZE - 10)),
+            (WIDTH - 70, HEIGHT - (TILE_SIZE - 20)),
         )
 
         for score in range(self.marcos_score):
             self.display_surface.blit(self.marcos_image, (75 + score * TILE_SIZE, HEIGHT - TILE_SIZE))
         for score in range(self.daniel_score):
-            self.display_surface.blit(self.daniel_image, (score * TILE_SIZE + 75 + WIDTH/2, HEIGHT - TILE_SIZE))
+            self.display_surface.blit(self.daniel_image, (WIDTH - 130 - score * TILE_SIZE, HEIGHT - TILE_SIZE))
 
     def reset_arena(self):
         self.visible_sprites.empty()

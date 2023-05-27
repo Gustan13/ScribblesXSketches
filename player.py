@@ -227,5 +227,3 @@ class Player(pygame.sprite.Sprite):
         self.powerup()
         self.explosions()
         self.update_wifi_timer()
-
-        print(self.stats)

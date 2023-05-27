@@ -52,11 +52,11 @@ class Arena:
 
         self.display_surface.blit(
             marcos_text,
-            (5, HEIGHT - TILE_SIZE),
+            (5, HEIGHT - (TILE_SIZE - 10)),
         )
         self.display_surface.blit(
             daniel_text,
-            (WIDTH/2, HEIGHT - TILE_SIZE),
+            (WIDTH/2, HEIGHT - (TILE_SIZE - 10)),
         )
 
         for score in range(self.marcos_score):

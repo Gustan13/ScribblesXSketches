@@ -8,7 +8,7 @@ class PowerUp(Tile):
         self.powerup_type = powerup_type
         self.explosion_sprites = explosion_sprites
 
-        self.sound = pygame.mixer.Sound("sounds/Item Get.wav")
+        self.sound = pygame.mixer.Sound("sounds/power_up.wav")
 
     def speed_up(self, stats):
         """Increases the player's speed by 1."""

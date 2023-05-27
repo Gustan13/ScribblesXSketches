@@ -1,13 +1,14 @@
 import random
 import pygame
 
-from settings import TILE_SIZE, map_4
+from settings import TILE_SIZE, HEIGHT, WIDTH, map_4
 from tile import Tile
 from marcos import Marcos
 from daniel import Daniel
 from destructive_wall import DestructiveWall
 from enum import Enum
 
+font = pygame.font.Font("./font/Minecraft.ttf", 20)
 
 class Tiles(Enum):
     GRASS = 0
@@ -31,6 +32,11 @@ class Arena:
         self.destructive_wall_sprites = pygame.sprite.Group()
         self.invisible_sprites = pygame.sprite.Group()
 
+        self.marcos_image = pygame.image.load("sprites/marcos1.png")
+        self.marcos_image = pygame.transform.scale(self.marcos_image, (TILE_SIZE, TILE_SIZE))
+        self.daniel_image = pygame.image.load("sprites/daniel1.png")
+        self.daniel_image = pygame.transform.scale(self.daniel_image, (TILE_SIZE, TILE_SIZE))
+
         self.player_killed = False
 
         self.create_map()
@@ -39,6 +45,24 @@ class Arena:
         self.daniel_score = 0
 
         self.max_points = max_score
+
+    def update_hud(self):
+        marcos_text = font.render("Marcos", True, "black")
+        daniel_text = font.render("Daniel", True, "black")
+
+        self.display_surface.blit(
+            marcos_text,
+            (5, HEIGHT - TILE_SIZE),
+        )
+        self.display_surface.blit(
+            daniel_text,
+            (WIDTH/2, HEIGHT - TILE_SIZE),
+        )
+
+        for score in range(self.marcos_score):
+            self.display_surface.blit(self.marcos_image, (75 + score * TILE_SIZE, HEIGHT - TILE_SIZE))
+        for score in range(self.daniel_score):
+            self.display_surface.blit(self.daniel_image, (score * TILE_SIZE + 75 + WIDTH/2, HEIGHT - TILE_SIZE))
 
     def reset_arena(self):
         self.visible_sprites.empty()
@@ -157,6 +181,8 @@ class Arena:
         self.explosion_sprites.update()
         self.destructive_wall_sprites.update()
 
+        self.update_hud()
+
         for player in self.player_sprite.sprites():
             if not player.is_dead:
                 continue
@@ -174,5 +200,6 @@ class Arena:
 
             print("Marcos:", self.marcos_score, "Daniel:", self.daniel_score)
 
+            self.update_hud()
             self.reset_arena()
             break

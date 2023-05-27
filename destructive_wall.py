@@ -1,4 +1,4 @@
-from random import choice
+from random import choice, randint
 
 import pygame
 
@@ -39,12 +39,14 @@ class DestructiveWall(Tile):
     def destroy(self):
         """Destroys the wall and spawns a powerup."""
         # make this powerup spawn randomly (sometimes) based on some proportion (ronaldinho and wifi should be less common).
-        PowerUp(
-            (self.rect.x, self.rect.y),
-            [self.powerup_sprites],
-            choice(self.powerup_array),
-            self.explosion_sprites,
-        )
+
+        if randint(0, 100) < 50:
+            PowerUp(
+                (self.rect.x, self.rect.y),
+                [self.powerup_sprites],
+                choice(self.powerup_array),
+                self.explosion_sprites,
+            )
         self.run_timer = False
         self.kill()
 

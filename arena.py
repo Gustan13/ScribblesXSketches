@@ -214,12 +214,14 @@ class Arena:
 
             if self.game_end is False:
                 if self.marcos_score == self.max_points:
+                    pygame.mixer.music.stop()
                     cel = celebration("marcos")
                     cel.play()
                     self.game_end = True
                     return
 
                 elif self.daniel_score == self.max_points:
+                    pygame.mixer.music.stop()
                     cel = celebration("daniel")
                     cel.play()
                     self.game_end = True

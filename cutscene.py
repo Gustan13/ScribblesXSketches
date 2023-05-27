@@ -316,18 +316,14 @@ class credits(Cutscene):
         super().__init__()
         texts = [
             "Made by Binder & Marcelo",
-            "Pixel Art: Marcelo",
-            "Enemy Pathfinding: Binder",
-            "Art work feedback: Marcos A.K.A Dudu",
-            "Player movement: Marcelo",
+            "Programming: Binder & Marcelo"
+            "Art: Arthur & Leo",
             "Testing: Fenoxer",
-            "Level System: Binder",
-            "Rendering System: Marcelo",
-            "Cutscene System: Binder",
+            "The Amazing Cutscene System: Binder",
             "Cutscenes: Marcelo",
             "Level Design: Binder",
             "Made with 1006 lines of code",
-            "Bday boy: Leo",
+            "Bday boys: Marcos & Daniel",
         ]
 
         for i in range(len(texts)):
@@ -336,9 +332,16 @@ class credits(Cutscene):
             "THE END", WIDTH / 2, HEIGHT + (len(texts) + 2) * (HEIGHT) / 2, "white"
         )
 
+        self.y = 0
+
     def update(self):
         for i in self.texts:
             i.y -= 5
+        
+        self.y += 1
+
+        if self.y > 1200:
+            self.is_running = False
 
 
 class celebration(Cutscene):
@@ -363,6 +366,6 @@ class celebration(Cutscene):
                     or event.key == pygame.K_SPACE
                     or event.key == pygame.K_RETURN
                 ):
-                    self.music.stop()
-                    print("Cu ")
+                    credits().play()
                     self.is_running = False
+                    self.music.stop()

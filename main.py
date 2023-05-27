@@ -30,11 +30,18 @@ class Game:
         self.cutscene2.play()
         self.cutscene3.play()
 
-        self.game_type = 3
+        self.game_type = 1
 
         self.arena = Arena(self.game_type)
         self.is_paused = False
         self.pause_menu = Pause(self.screen)
+
+    def return_menu(self):
+        self.mainmenu = MainMenu(self.screen, self.clock)
+        self.arena = Arena(self.game_type)
+        self.is_paused = False
+        self.mainmenu.draw()
+        self.mainmenu.play()
 
     def draw_pause(self):
         """Pause the game."""
@@ -48,11 +55,7 @@ class Game:
         elif res == "resume":
             self.is_paused = False
         elif res == "main_menu":
-            self.mainmenu = MainMenu(self.screen, self.clock)
-            self.arena = Arena(self.game_type)
-            self.is_paused = False
-            self.mainmenu.draw()
-            self.mainmenu.play()
+            self.return_menu()
 
         elif res == "options":
             print("options")  # TODO: Make this a trolling
@@ -75,7 +78,10 @@ class Game:
                 continue
 
             self.screen.fill("black")
-            self.arena.run()
+            if self.arena.game_end:
+                self.return_menu()
+            else:
+                self.arena.run()
             self.clock.tick(FPS)
 
 

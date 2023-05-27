@@ -93,6 +93,7 @@ class Cutscene:
 
     def play(self):
         while self.is_running:
+            self.update()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -106,7 +107,6 @@ class Cutscene:
                         self.is_running = False
 
             self.screen.fill("black")
-            self.update()
             self.draw()
             self.write_texts()
             self.update_screen()
@@ -245,3 +245,28 @@ class credits(Cutscene):
     def update(self):
         for i in self.texts:
             i.y -= 5
+
+class celebration(Cutscene):
+    def __init__(self, winner):
+        super().__init__()
+        self.createActor("sprites/" + winner + "1.png", 128, 128, WIDTH, HEIGHT)
+        self.createText("VICTORY " + winner.upper(), (WIDTH/2) - 200, HEIGHT / 2 + 200, "white")
+
+        self.music = pygame.mixer.Sound("sounds/victory.mp3")
+        self.music.play()
+
+    def update(self):
+        for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    if (
+                        event.key == pygame.K_ESCAPE
+                        or event.key == pygame.K_SPACE
+                        or event.key == pygame.K_RETURN
+                    ):
+                        self.music.stop()
+                        print("Cu ")
+                        self.is_running = False
+        

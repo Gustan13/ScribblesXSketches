@@ -7,6 +7,7 @@ from marcos import Marcos
 from daniel import Daniel
 from destructive_wall import DestructiveWall
 from enum import Enum
+from cutscene import celebration
 
 font = pygame.font.Font("./font/Minecraft.ttf", 20)
 
@@ -32,9 +33,9 @@ class Arena:
         self.destructive_wall_sprites = pygame.sprite.Group()
         self.invisible_sprites = pygame.sprite.Group()
 
-        self.marcos_image = pygame.image.load("sprites/marcos1.png")
+        self.marcos_image = pygame.image.load("sprites/marcos_icon.png")
         self.marcos_image = pygame.transform.scale(self.marcos_image, (TILE_SIZE, TILE_SIZE))
-        self.daniel_image = pygame.image.load("sprites/daniel1.png")
+        self.daniel_image = pygame.image.load("sprites/daniel_icon.png")
         self.daniel_image = pygame.transform.scale(self.daniel_image, (TILE_SIZE, TILE_SIZE))
 
         self.player_killed = False
@@ -45,6 +46,7 @@ class Arena:
         self.daniel_score = 0
 
         self.max_points = max_score
+        self.game_end = False
 
     def update_hud(self):
         marcos_text = font.render("Marcos", True, "white")
@@ -161,6 +163,9 @@ class Arena:
 
     def run(self):
         """Main arena loop."""
+        if self.game_end:
+            return
+
         self.visible_sprites.draw(self.display_surface)
 
         self.destructive_wall_sprites.draw(self.display_surface)
@@ -193,10 +198,15 @@ class Arena:
             elif player.name == "daniel":
                 self.marcos_score += 1
 
-            if self.marcos_score == self.max_points:
-                celebration("marcos")
-            elif self.daniel_score == self.max_points:
-                celebration("daniel")
+            if self.game_end == False:
+                if self.marcos_score == self.max_points:
+                    cel = celebration("marcos")
+                elif self.daniel_score == self.max_points:
+                    cel = celebration("daniel")
+
+                cel.play()
+                self.game_end = True
+                return
 
             print("Marcos:", self.marcos_score, "Daniel:", self.daniel_score)
 

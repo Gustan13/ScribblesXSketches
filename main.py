@@ -41,10 +41,12 @@ class Game:
 
     def return_menu(self):
         self.mainmenu = MainMenu(self.screen, self.clock)
-        self.arena = Arena(self.game_type)
         self.is_paused = False
         self.mainmenu.draw()
         self.mainmenu.play()
+        self.map_selection = mapselection()
+        self.map_selection.play()
+        self.arena = Arena(self.game_type, self.map_selection.level_idx)
 
     def draw_pause(self):
         """Pause the game."""

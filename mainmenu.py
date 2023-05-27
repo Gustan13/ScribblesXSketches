@@ -26,6 +26,9 @@ class MainMenu:
         self.is_running = True
         self.is_start_game_selected = True
 
+        self.music = pygame.mixer.Sound("sounds/intro.mp3")
+        self.music.play()
+
         self.sounds = {
             "move": pygame.mixer.Sound("./sounds/move cursor.mp3"),
             "select": pygame.mixer.Sound("./sounds/Select.wav"),
@@ -147,6 +150,7 @@ class MainMenu:
                             self.sounds["select"].play()
                         if self.is_start_game_selected:
                             self.is_running = False
+                            self.music.stop()
                         else:
                             self.show_controls = True
                     if event.key == pygame.K_ESCAPE:

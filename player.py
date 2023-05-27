@@ -9,7 +9,7 @@ from settings import (
     TILE_SIZE,
     DEFAULT_POWERUP_STATS,
     WIDTH,
-    HEIGHT
+    HEIGHT,
 )
 
 from bomb import Bomb
@@ -73,8 +73,8 @@ class Player(pygame.sprite.Sprite):
             "place_bomb": pygame.mixer.Sound(pathlib.Path("sounds", "Place Bomb.wav")),
         }
 
-        self.is_dead = False # add
-        self.name = name # add
+        self.is_dead = False  # add
+        self.name = name  # add
 
     def explode_bomb_wifi(self):
         """Explodes the player's bombs."""
@@ -211,10 +211,11 @@ class Player(pygame.sprite.Sprite):
             self.rect.topleft = pygame.math.Vector2(WIDTH, HEIGHT)
             # play death sound
             self.sounds["dies"].play()
-        
+
     def respawn(self):
         self.rect.topleft = self.respawn_point
         self.stats = DEFAULT_POWERUP_STATS.copy()
+        self.current_bombs = 0
 
     def update(self):
         """Main player loop that runs every frame."""
@@ -226,3 +227,5 @@ class Player(pygame.sprite.Sprite):
         self.powerup()
         self.explosions()
         self.update_wifi_timer()
+
+        print(self.stats)

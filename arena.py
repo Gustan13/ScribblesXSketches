@@ -1,7 +1,7 @@
 import random
 import pygame
 
-from settings import TILE_SIZE, HEIGHT, WIDTH, map_4
+from settings import HALF_TILE, TILE_SIZE, HEIGHT, WIDTH, map_4
 from tile import Tile
 from marcos import Marcos
 from daniel import Daniel
@@ -10,6 +10,7 @@ from enum import Enum
 from cutscene import celebration
 
 font = pygame.font.Font("./font/Minecraft.ttf", 20)
+
 
 class Tiles(Enum):
     GRASS = 0
@@ -34,9 +35,13 @@ class Arena:
         self.invisible_sprites = pygame.sprite.Group()
 
         self.marcos_image = pygame.image.load("sprites/marcos_icon.png")
-        self.marcos_image = pygame.transform.scale(self.marcos_image, (TILE_SIZE, TILE_SIZE))
+        self.marcos_image = pygame.transform.scale(
+            self.marcos_image, (HALF_TILE, HALF_TILE)
+        )
         self.daniel_image = pygame.image.load("sprites/daniel_icon.png")
-        self.daniel_image = pygame.transform.scale(self.daniel_image, (TILE_SIZE, TILE_SIZE))
+        self.daniel_image = pygame.transform.scale(
+            self.daniel_image, (HALF_TILE, HALF_TILE)
+        )
 
         self.player_killed = False
 
@@ -49,6 +54,7 @@ class Arena:
         self.game_end = False
 
     def update_hud(self):
+        """Updates the HUD with the current score."""
         marcos_text = font.render("Marcos", True, "white")
         daniel_text = font.render("Daniel", True, "white")
 
@@ -62,9 +68,14 @@ class Arena:
         )
 
         for score in range(self.marcos_score):
-            self.display_surface.blit(self.marcos_image, (75 + score * TILE_SIZE, HEIGHT - TILE_SIZE))
+            self.display_surface.blit(
+                self.marcos_image, (85 + score * TILE_SIZE, HEIGHT - TILE_SIZE + 10)
+            )
         for score in range(self.daniel_score):
-            self.display_surface.blit(self.daniel_image, (WIDTH - 130 - score * TILE_SIZE, HEIGHT - TILE_SIZE))
+            self.display_surface.blit(
+                self.daniel_image,
+                (WIDTH - 130 - score * TILE_SIZE, HEIGHT - TILE_SIZE + 10),
+            )
 
     def reset_arena(self):
         self.visible_sprites.empty()
@@ -125,7 +136,7 @@ class Arena:
                     )
 
                 elif tile == Tiles.MARCOS.value:
-                    if self.player_killed == False:
+                    if self.player_killed is False:
                         Marcos(
                             (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                             [self.player_sprite],
@@ -143,7 +154,7 @@ class Arena:
                         "grass.png",
                     )
                 elif tile == Tiles.DANIEL.value:
-                    if self.player_killed == False:
+                    if self.player_killed is False:
                         Daniel(
                             (idx_col * TILE_SIZE, idx_row * TILE_SIZE),
                             [self.player_sprite],
@@ -198,15 +209,18 @@ class Arena:
             elif player.name == "daniel":
                 self.marcos_score += 1
 
-            if self.game_end == False:
+            if self.game_end is False:
                 if self.marcos_score == self.max_points:
                     cel = celebration("marcos")
+                    cel.play()
+                    self.game_end = True
+                    return
+
                 elif self.daniel_score == self.max_points:
                     cel = celebration("daniel")
-
-                cel.play()
-                self.game_end = True
-                return
+                    cel.play()
+                    self.game_end = True
+                    return
 
             print("Marcos:", self.marcos_score, "Daniel:", self.daniel_score)
 

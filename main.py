@@ -30,7 +30,7 @@ class Game:
         self.cutscene2.play()
         self.cutscene3.play()
 
-        self.game_type = 1
+        self.game_type = 3
 
         self.arena = Arena(self.game_type)
         self.is_paused = False

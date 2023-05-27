@@ -3,7 +3,7 @@ import pygame
 import math
 
 from mainmenu import font
-from settings import FPS, HEIGHT, WIDTH
+from settings import FPS, HEIGHT, WIDTH, maps, map_names
 
 
 class Cutscene:
@@ -16,7 +16,7 @@ class Cutscene:
                 self.rect.x = x
                 self.rect.y = y
                 self.type = "image_file"
-            except pygame.error:
+            except:
                 self.image = name
                 self.rect = pygame.Rect(x, y, width, height)
                 self.type = "solid_color"
@@ -217,6 +217,91 @@ class cutscene3(Cutscene):
         pass
 
 
+class mapselection(Cutscene):
+    def __init__(self):
+        super().__init__()
+        self.createActor("images/background_controls.png", 0, 0, WIDTH, HEIGHT)
+
+        self.level_idx = 1
+
+        self.map1 = self.createActor("images/map_1.png", 115, 165, 335, 335)
+        self.map2 = self.createActor("images/map_2.png", 480, 165, 335, 335)
+        self.map3 = self.createActor("images/map_3.png", 115, 550, 335, 335)
+        self.map4 = self.createActor("images/map_4.png", 480, 550, 335, 335)
+
+        self.rectangle = self.createActor("images/rectangle.png", 115, 165, 350, 350)
+
+        self.map_name = self.createText(
+            map_names[self.level_idx - 1], WIDTH // 2, HEIGHT - 30, "white"
+        )
+
+        self.title = self.createText("Select a map", WIDTH // 2, 80, "white")
+
+    def increase_level_idx(self):
+        if self.level_idx >= len(maps):
+            return
+
+        self.level_idx += 1
+
+    def decrease_level_idx(self):
+        if self.level_idx <= 1:
+            return
+
+        self.level_idx -= 1
+
+    def decrease_two_levels_idx(self):
+        if self.level_idx <= 2:
+            return
+
+        self.level_idx -= 2
+
+    def increase_two_levels_idx(self):
+        if self.level_idx >= len(maps) - 1:
+            return
+
+        self.level_idx += 2
+
+    def get_input(self):
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_LEFT]:
+            self.decrease_level_idx()
+        if keys[pygame.K_UP]:
+            self.decrease_two_levels_idx()
+        if keys[pygame.K_DOWN]:
+            self.increase_two_levels_idx()
+        if keys[pygame.K_RIGHT]:
+            self.increase_level_idx()
+
+        if keys[pygame.K_x]:
+            return True
+
+        return False
+
+    def update(self):
+        # draw a rectangle around the selected map
+
+        self.clock.tick(30)
+
+        if self.level_idx == 1:
+            self.rectangle.rect.x = 115 - 5
+            self.rectangle.rect.y = 165 - 5
+        elif self.level_idx == 2:
+            self.rectangle.rect.x = 480 - 5
+            self.rectangle.rect.y = 165 - 5
+        elif self.level_idx == 3:
+            self.rectangle.rect.x = 115 - 5
+            self.rectangle.rect.y = 550 - 5
+        elif self.level_idx == 4:
+            self.rectangle.rect.x = 480 - 5
+            self.rectangle.rect.y = 550 - 5
+
+        self.map_name.text = map_names[self.level_idx - 1]
+
+        if self.get_input():  # map selected
+            self.is_running = False
+
+
 class credits(Cutscene):
     def __init__(self):
         super().__init__()
@@ -246,27 +331,29 @@ class credits(Cutscene):
         for i in self.texts:
             i.y -= 5
 
+
 class celebration(Cutscene):
     def __init__(self, winner):
         super().__init__()
         self.createActor("sprites/" + winner + "1.png", 128, 128, WIDTH, HEIGHT)
-        self.createText("VICTORY " + winner.upper(), (WIDTH/2) - 200, HEIGHT / 2 + 200, "white")
+        self.createText(
+            "VICTORY " + winner.upper(), (WIDTH / 2) - 200, HEIGHT / 2 + 200, "white"
+        )
 
         self.music = pygame.mixer.Sound("sounds/victory.mp3")
         self.music.play()
 
     def update(self):
         for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
-                if event.type == pygame.KEYDOWN:
-                    if (
-                        event.key == pygame.K_ESCAPE
-                        or event.key == pygame.K_SPACE
-                        or event.key == pygame.K_RETURN
-                    ):
-                        self.music.stop()
-                        print("Cu ")
-                        self.is_running = False
-        
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if (
+                    event.key == pygame.K_ESCAPE
+                    or event.key == pygame.K_SPACE
+                    or event.key == pygame.K_RETURN
+                ):
+                    self.music.stop()
+                    print("Cu ")
+                    self.is_running = False

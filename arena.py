@@ -1,12 +1,13 @@
 import random
+
+from enum import Enum
 import pygame
 
-from settings import HALF_TILE, TILE_SIZE, HEIGHT, WIDTH, map_4
+from settings import HALF_TILE, TILE_SIZE, WIDTH, HEIGHT, maps
 from tile import Tile
 from marcos import Marcos
 from daniel import Daniel
 from destructive_wall import DestructiveWall
-from enum import Enum
 from cutscene import celebration
 
 font = pygame.font.Font("./font/Minecraft.ttf", 20)
@@ -22,7 +23,7 @@ class Tiles(Enum):
 
 
 class Arena:
-    def __init__(self, max_score):
+    def __init__(self, max_score, map_num):
         self.display_surface = pygame.display.get_surface()
 
         self.visible_sprites = pygame.sprite.Group()
@@ -44,6 +45,8 @@ class Arena:
         )
 
         self.player_killed = False
+
+        self.map = maps[map_num - 1]
 
         self.create_map()
 
@@ -96,7 +99,7 @@ class Arena:
 
     def create_map(self):
         """Creates the map from the arrayMap in settings.py."""
-        for idx_row, row in enumerate(map_4):
+        for idx_row, row in enumerate(self.map):
             for idx_col, tile in enumerate(row):
                 random_grass = random.choice(["grass.png", "grass1.png"])
 

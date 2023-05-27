@@ -6,7 +6,7 @@ from settings import FPS, HEIGHT, WIDTH
 from arena import Arena
 from mainmenu import MainMenu
 
-from cutscene import cutscene1, cutscene2, cutscene3
+from cutscene import cutscene1, cutscene2, cutscene3, mapselection
 
 
 class Game:
@@ -22,6 +22,10 @@ class Game:
         self.mainmenu.draw()
         self.mainmenu.play()
 
+        # game selection
+        self.map_selection = mapselection()
+        self.map_selection.play()
+
         self.cutscene1 = cutscene1()
         self.cutscene2 = cutscene2()
         self.cutscene3 = cutscene3()
@@ -31,8 +35,7 @@ class Game:
         self.cutscene3.play()
 
         self.game_type = 3
-
-        self.arena = Arena(self.game_type)
+        self.arena = Arena(self.game_type, self.map_selection.level_idx)
         self.is_paused = False
         self.pause_menu = Pause(self.screen)
 

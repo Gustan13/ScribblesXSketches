@@ -35,17 +35,22 @@ class Game:
         self.cutscene3.play()
 
         self.game_type = 3
+        pg.mixer.music.load("sounds/epic_music.mp3")
+        pg.mixer.music.play(-1)
         self.arena = Arena(self.game_type, self.map_selection.level_idx)
         self.is_paused = False
         self.pause_menu = Pause(self.screen)
 
     def return_menu(self):
+        pg.mixer.music.stop()
         self.mainmenu = MainMenu(self.screen, self.clock)
         self.is_paused = False
         self.mainmenu.draw()
         self.mainmenu.play()
         self.map_selection = mapselection()
         self.map_selection.play()
+        pg.mixer.music.load("sounds/epic_music.mp3")
+        pg.mixer.music.play(-1)
         self.arena = Arena(self.game_type, self.map_selection.level_idx)
 
     def draw_pause(self):

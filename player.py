@@ -214,6 +214,7 @@ class Player(pygame.sprite.Sprite):
         
     def respawn(self):
         self.rect.topleft = self.respawn_point
+        self.stats = DEFAULT_POWERUP_STATS.copy()
 
     def update(self):
         """Main player loop that runs every frame."""

@@ -30,7 +30,9 @@ class Game:
         self.cutscene2.play()
         self.cutscene3.play()
 
-        self.arena = Arena()
+        self.game_type = 3
+
+        self.arena = Arena(self.game_type)
         self.is_paused = False
         self.pause_menu = Pause(self.screen)
 
@@ -47,7 +49,7 @@ class Game:
             self.is_paused = False
         elif res == "main_menu":
             self.mainmenu = MainMenu(self.screen, self.clock)
-            self.arena = Arena()
+            self.arena = Arena(self.game_type)
             self.is_paused = False
             self.mainmenu.draw()
             self.mainmenu.play()

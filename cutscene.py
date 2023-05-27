@@ -224,6 +224,8 @@ class mapselection(Cutscene):
 
         self.level_idx = 1
 
+        self.is_pressed = False
+
         self.map1 = self.createActor("images/map_1.png", 115, 165, 335, 335)
         self.map2 = self.createActor("images/map_2.png", 480, 165, 335, 335)
         self.map3 = self.createActor("images/map_3.png", 115, 550, 335, 335)
@@ -265,23 +267,30 @@ class mapselection(Cutscene):
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_LEFT]:
-            self.decrease_level_idx()
-        if keys[pygame.K_UP]:
-            self.decrease_two_levels_idx()
-        if keys[pygame.K_DOWN]:
-            self.increase_two_levels_idx()
-        if keys[pygame.K_RIGHT]:
-            self.increase_level_idx()
-
-        if keys[pygame.K_x]:
+            if not self.is_pressed:
+                self.decrease_level_idx()
+                self.is_pressed = True
+        elif keys[pygame.K_UP]:
+            if not self.is_pressed:
+                self.decrease_two_levels_idx()
+                self.is_pressed = True
+        elif keys[pygame.K_DOWN]:
+            if not self.is_pressed:
+                self.increase_two_levels_idx()
+                self.is_pressed = True
+        elif keys[pygame.K_RIGHT]:
+            if not self.is_pressed:
+                self.increase_level_idx()
+                self.is_pressed = True
+        elif keys[pygame.K_x]:
             return True
+        else:
+            self.is_pressed = False
 
         return False
 
     def update(self):
         # draw a rectangle around the selected map
-
-        self.clock.tick(30)
 
         if self.level_idx == 1:
             self.rectangle.rect.x = 115 - 5

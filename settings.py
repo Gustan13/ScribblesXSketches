@@ -10,13 +10,13 @@ HALF_TILE = 36
 WIDTH = 15 * TILE_SIZE
 HEIGHT = 15 * TILE_SIZE
 
-EXPLOSION_TIME = 20
+EXPLOSION_TIME = 18
 
 DEFAULT_POWERUP_STATS = {  # Default stats
     "max_bombs": 1,
     "speed": TILE_SIZE // 16,
     "bomb_range": 1,
-    "ronaldinho": False,  # Ronaldinho mode true para teste
+    "ronaldinho": False,
     "wifi_explode": False,
 }
 
@@ -108,7 +108,7 @@ map_4 = [
 ]
 
 maps = [map_1, map_2, map_3, map_4]
-map_names = ["noob", "brain fuck", "bullseye", "shower rooms"]
+map_names = ["noob", "brain f*ck", "bullseye", "mill"]
 # 0 - grass
 # 1 - wall with shadow
 # 2 - wall without shadow

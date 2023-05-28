@@ -35,19 +35,20 @@ A bomberman clone.
   - [x] Add power up sprites
   - [x] Add tile sprites
 
-- [ ] Add levels
+- [v] Add levels
 
-  - [ ] Add level 1
-  - [ ] Add level 2
-  - [ ] Add level 3
+  - [v] Add level 1
+  - [v] Add level 2
+  - [v] Add level 3
+  - [v] Add level 4
 
-- [ ] Add menu
+- [v] Add menu
   - [x] Add main menu
   - [x] Add pause menu
-  - [ ] Add game over menu
-  - [ ] Add level select menu
+  - [v] Add game over menu
+  - [v] Add level select menu
   - [ ] Add options menu
-  - [ ] Add credits menu
+  - [v] Add credits menu
 
 ## Known bugs
 

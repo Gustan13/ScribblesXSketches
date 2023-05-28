@@ -20,19 +20,18 @@ DEFAULT_POWERUP_STATS = {  # Default stats
     "wifi_explode": False,
 }
 
-POWERUPS_ARRAY = list([
-    "max_bombs",
-    "max_bombs",
-    "max_bombs",
-    "max_bombs",
-    "speed",
-    "bomb_range",
-    "bomb_range",
-    "bomb_range",
-    "bomb_range",
-    "bomb_range",
-    "ronaldinho",  # Ronaldinho mode true para teste
-    "wifi_explode"]
+POWERUPS_ARRAY = list(
+    [
+        "max_bombs",
+        "max_bombs",
+        "max_bombs",
+        "speed",
+        "bomb_range",
+        "bomb_range",
+        "bomb_range",
+        "ronaldinho",
+        "wifi_explode",
+    ]  # 1/3 max_bombs 1/9 speed 1/3 bomb_range 1/9 ronaldinho 1/9 wifi_explode
 )  # Array with powerups on DEFAULT_POWERUP_STATS
 
 

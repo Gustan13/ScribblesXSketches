@@ -1,12 +1,13 @@
-import pygame
 import pathlib
+import pygame
+
 
 from settings import SPRITES_PATH, FPS
 
 
 class Animation:
     def __init__(self, name, frame_amount, fps, scale):
-        self.fps = fps / FPS
+        self.fps = fps / FPS  # 60 FPS
 
         self.iterable = 0
 
@@ -23,6 +24,7 @@ class Animation:
         self.initialize_animation()
 
     def initialize_animation(self):
+        """Initialize the animation frames"""
         for i in range(self.frame_amount):
             frame = pygame.image.load(
                 pathlib.Path(SPRITES_PATH, f"{self.name}{(i + 1)}.png")
@@ -34,12 +36,15 @@ class Animation:
             self.frames.append(mirrored_frame)
 
     def speed_up(self):
+        """Speed up the animation"""
         self.fps += 1
 
     def speed_down(self):
+        """Speed down the animation"""
         self.fps -= 1
 
     def play(self, object):
+        """Play the animation"""
         if self.iterable >= self.frame_amount:
             self.iterable = 0
 

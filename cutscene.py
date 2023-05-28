@@ -316,7 +316,7 @@ class credits(Cutscene):
         super().__init__()
         texts = [
             "Made by Binder & Marcelo",
-            "Programming: Binder & Marcelo"
+            "Programming: Binder & Marcelo",
             "Art: Arthur & Leo",
             "Testing: Fenoxer",
             "The Amazing Cutscene System: Binder",
@@ -337,7 +337,7 @@ class credits(Cutscene):
     def update(self):
         for i in self.texts:
             i.y -= 5
-        
+
         self.y += 1
 
         if self.y > 1200:

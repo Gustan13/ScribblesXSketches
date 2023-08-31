@@ -2,7 +2,41 @@
 
 A bomberman clone.
 
-## Future features
+## Screenshots
+- Menu
+![Mainmenu](https://github.com/marcelo-schreiber/Scribbles-vs-Sketches/assets/64107011/8aa581c9-d352-4e77-86a8-e81753e70c4b)
+- Cutscene
+![Cutscene](https://cdn.discordapp.com/attachments/685226653764550671/1112484403860475924/cutscene.png)
+- Gameplay
+![Gameplay](https://cdn.discordapp.com/attachments/685226653764550671/1112484404154089472/gameplay.png)
+
+## Como iniciar o jogo
+Se está num ambiente windows, provavelmente o executável irá funcionar para você, somente clique duas vezes nele. 
+Caso não funcione, faça uma [instalação](#Instalação).
+
+
+## Autores
+
+- [@Gustan13](https://github.com/Gustan13)
+- [@marcelo-schreiber](https://github.com/marcelo-schreiber)
+
+
+## Instalação
+
+Instale [Python](https://www.python.org/) e em um terminal rode:
+```bash
+pip install pygame
+```
+depois, para iniciar o jogo:
+
+```bash
+python main.py
+```
+
+se não funcionar, você pode trocar o 'python' por 'python3'.
+Caso queira gerar um novo .exe, verifique o arquivo 'settings.py'.
+
+## Features
 
 - [x] Explosion system <!-- Binder -->
 

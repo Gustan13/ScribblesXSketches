@@ -3,8 +3,6 @@
 A bomberman clone.
 
 ## Screenshots
-- Menu
-![Mainmenu](https://github.com/marcelo-schreiber/Scribbles-vs-Sketches/assets/64107011/8aa581c9-d352-4e77-86a8-e81753e70c4b)
 - Cutscene
 ![Cutscene](https://cdn.discordapp.com/attachments/685226653764550671/1112484403860475924/cutscene.png)
 - Gameplay

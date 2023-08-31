@@ -1,4 +1,4 @@
-# ScribblesXSketches
+# Scribbles Vs. Sketches 💣
 
 A bomberman clone.
 
